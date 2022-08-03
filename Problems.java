@@ -46,21 +46,20 @@ public class Problems {
     	 points = new ArrayList<>();
          int count=0;
          int s=0;
-         nodeNum=1600;
+         nodeNum=318;
        	 pos = new double[nodeNum][2];
     	  while(scan.hasNext()){
     		  count++;
-    		  if(count>15){
+    		  if(count>10){
     			  scan.nextDouble();
     	     		pos[s][0] = scan.nextDouble();
     	    		pos[s][1] = scan.nextDouble();
-    	    		System.out.print(pos[s][0]+"  ");
-    	    		System.out.println(pos[s][1]);
+    	    	//	System.out.print(pos[s][0]+"  ");
+    	    	//	System.out.println(pos[s][1]);
     	    		s++;
-    	    		points.add(new Point(s, pos[s][0], pos[s][1]));
+    	    		//points.add(new Point(s, pos[s][0], pos[s][1]));
     			    scan.nextLine();
-    			    System.out.println(s+"s的值");
-    			    if(s==317){
+     			    if(s==317){
     			    	System.out.println("跳出循环");
     			    	break;
     			    }
@@ -107,22 +106,26 @@ public class Problems {
         scan.skip("");
         scan.skip("");
       	int numOfCluster = scan.nextInt();
-      	System.out.println(numOfCluster+"===================");
-       	for (int i = 0; i < numOfCluster; i++) {
+  
+      	//System.out.println(numOfCluster+"===================");
+       	for (int i = 0; i < 1; i++) {
      		List<Integer> c = new ArrayList<>();
      		int m =  scan.nextInt();
      		scan.nextLine();
-     		System.out.println(m+"==========");
+     	 //	System.out.println(m+"==========");
      		for (int j = 0; j < m; j++) {
      			scan.nextLine();
      			int node =   scan.nextInt();
 /*     			System.out.println(node+"node");
-     			System.out.println(clusterNum.length+"length");
+     			System.out.println(clusterNum.length+"length");0
      			System.out.println(clusters.size()+"nodeNum");*/
-     			System.out.println(node);
+     	
      			c.add(node - 1);		                                              
      				clusterNum[node - 1] = clusters.size();
-         			clusterPos[node - 1] = c.size() - 1;	    	
+     				System.out.println(c.size()+"size");
+     				System.out.println(node+"node");
+     				System.out.println(numOfCluster+"mmmm");
+         			clusterPos[node - 1] = c.size() - 1;	
      		}
      		clusters.add(c);
      		if (c.size() > ((ArrayList) clusters.get(largestCluster)).size()) {
@@ -130,7 +133,7 @@ public class Problems {
      		}
      	}
      	
-     	for (int i = 0; i < numOfCluster; i++) {//center of each cluster
+     /*	for (int i = 0; i < numOfCluster; i++) {//center of each cluster
      		scan.nextInt();
      	}
      	int a = scan.nextInt();
@@ -141,11 +144,12 @@ public class Problems {
      		//System.out.println(prize[i]);
      	}
      	a = scan.nextInt();
-     	assert(a == -999);
+     	assert(a == -999);*/
     }
   //to calculate the distance between cities
   	public void calcuDistance() {
   		dists = new double[nodeNum][nodeNum];
+  		System.out.println(pos[0][0]+"数组！！！！"+pos[0][1]);
   		for (int i=0; i<nodeNum;i++) {
   			for (int j=0; j<nodeNum;j++) {
   				if (i==j) {
@@ -153,14 +157,18 @@ public class Problems {
    				} else {
   					double distance;
   					distance = (pos[i][0]-pos[j][0]);
+  					System.out.println(distance+"distance!!!!!!!!");
   					distance *= distance;
   					distance += (pos[i][1]-pos[j][1])*(pos[i][1]-pos[j][1]);
   					if (fileName.toLowerCase().contains("att") && !Solution.withPrice) {
   						distance = Math.ceil(Math.sqrt(distance/10.0));
+  						System.out.println("在这里计算");
   					} else {
   						distance = Math.sqrt(distance);	 
   					}
 					dists[i][j] = (int)(distance + 0.5);
+				   System.out.println(distance+"distance!!!!!!!!!!");
+					System.out.println(dists[i][j]); 
   				}
   			}
   		}
