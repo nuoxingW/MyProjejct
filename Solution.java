@@ -1,5 +1,8 @@
 package Myproject;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class Solution implements  Comparable<Solution> {
 
 	public static boolean withPrice;
@@ -53,7 +56,7 @@ public class Solution implements  Comparable<Solution> {
 		tourLength = p.evaluate(nTour);
 		//System.out.println(tourLength);
 	}
-	
+
 	private int[] randomTour() {
 		// TODO Auto-generated method stub
 		return null;
@@ -145,6 +148,7 @@ public class Solution implements  Comparable<Solution> {
 		tourLength += delta;
 		swpTimes++;
 	}
+
 
 
 

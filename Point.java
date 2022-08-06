@@ -1,5 +1,8 @@
 package Myproject;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class Point {
  private int num;
  private double x;
@@ -10,7 +13,4 @@ public Point(int num, double x, double y) {
 	this.x = x;
 	this.y = y;
 }
-
- 
-
 }

@@ -19,19 +19,17 @@ public class Problems {
 	public static String fileName = null;
 	public static ArrayList  points;
  
-	int  nodeNum;
-    double pos[][];
-    int[] clusterNum = new int[nodeNum];
-    int lusterPos[] = new int[nodeNum];
-	int largestCluster ;
-	int  numOfCluster ;
-	double[][] dists;
-	int clusterPos[];
-	double[] prize;
-  
-	FileReader data;
-
-	public void Problems(String fileName) throws FileNotFoundException,IOException {
+	public static int  nodeNum=318;
+	public static double pos[][];
+	public static int[] clusterNum = new int[nodeNum];
+	public static  int lusterPos[] = new int[nodeNum];
+	public static int largestCluster ;
+	public static int  numOfCluster ;
+	public static double[][] dists;
+	public static int clusterPos[];
+	public static double[] prize;
+	public static FileReader data;
+	public  static void Problems(String fileName) throws FileNotFoundException,IOException {
 		Problems.fileName = fileName;	
 		data = new FileReader(fileName);
   		Scanner scan = new Scanner(data);
@@ -42,11 +40,11 @@ public class Problems {
  
 	
  //读取文件
-    private void readFileGTP(Scanner scan) {
+    public static void readFileGTP(Scanner scan) {
     	 points = new ArrayList<>();
          int count=0;
          int s=0;
-         nodeNum=318;
+        
        	 pos = new double[nodeNum][2];
     	  while(scan.hasNext()){
     		  count++;
@@ -54,8 +52,8 @@ public class Problems {
     			  scan.nextDouble();
     	     		pos[s][0] = scan.nextDouble();
     	    		pos[s][1] = scan.nextDouble();
-    	    	//	System.out.print(pos[s][0]+"  ");
-    	    	//	System.out.println(pos[s][1]);
+    	    	 	System.out.print(pos[s][0]+"  ");
+    	    	 	System.out.println(pos[s][1]);
     	    		s++;
     	    		//points.add(new Point(s, pos[s][0], pos[s][1]));
     			    scan.nextLine();
@@ -82,7 +80,8 @@ public class Problems {
     		System.out.println( pos[i][1]);
     		
     	}*/
-    	calcuDistance();
+    	  Method method =new Method();;
+    	  method.calcuDistance();
 //    	dists = new double[nodeNum][nodeNum];
 //    	for (int i = 0; i < nodeNum; i++) {
 //    		for (int j = i + 1; j < nodeNum; j ++) {
@@ -96,7 +95,7 @@ public class Problems {
 
     }
     
-    public void clusternum() throws FileNotFoundException{
+    public static void clusternum() throws FileNotFoundException{
 		FileReader data1 = new FileReader("C:\\Users\\Nuoxing.W\\Desktop\\36LIN318.GTP.txt");
   		Scanner scan = new Scanner(data1);
         ArrayList clusters = new ArrayList();
@@ -147,32 +146,64 @@ public class Problems {
      	assert(a == -999);*/
     }
   //to calculate the distance between cities
-  	public void calcuDistance() {
-  		dists = new double[nodeNum][nodeNum];
-  		System.out.println(pos[0][0]+"数组！！！！"+pos[0][1]);
-  		for (int i=0; i<nodeNum;i++) {
-  			for (int j=0; j<nodeNum;j++) {
-  				if (i==j) {
- 					dists[i][j]=Integer.MAX_VALUE;
-   				} else {
-  					double distance;
-  					distance = (pos[i][0]-pos[j][0]);
-  					System.out.println(distance+"distance!!!!!!!!");
-  					distance *= distance;
-  					distance += (pos[i][1]-pos[j][1])*(pos[i][1]-pos[j][1]);
-  					if (fileName.toLowerCase().contains("att") && !Solution.withPrice) {
-  						distance = Math.ceil(Math.sqrt(distance/10.0));
-  						System.out.println("在这里计算");
-  					} else {
-  						distance = Math.sqrt(distance);	 
-  					}
-					dists[i][j] = (int)(distance + 0.5);
-				   System.out.println(distance+"distance!!!!!!!!!!");
-					System.out.println(dists[i][j]); 
-  				}
-  			}
-  		}
-  	}
+
+
+class Item implements Comparable<Item>{
+	private int id;
+	private double value;
+	private double density;
+	private double weight;
+	
+	public Item(int id, double value, double weight) {
+		this.id = id;
+		this.value = value;
+		this.weight = weight;
+		density = value / weight;
+	}
+	
+	
+	
+	public int getID() { return id; }
+	public double getValue() { return value;}
+	public double getWeight() { return weight;}
+	public double getDensity() { return density; }
+
+
+
+	@Override
+	public int compareTo(Item o) {
+		if (this.density > o.density) {
+			return 1;
+		} else if (this.density == o.density) {
+			return 0;
+		} else {
+			return -1;
+		}
+	}
+}
+	public static Problems getProblem() {
+		return problem;
+	}
+
+
+
+	public static void setProblem(Problems problem) {
+		Problems.problem = problem;
+	}
+
+
+
+	public int getCityNumber() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	public double evaluate(int[] nTour) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	  	 
 }
