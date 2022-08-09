@@ -9,8 +9,6 @@ public class Solution implements  Comparable<Solution> {
 	public void setLastImproving(int n) { this.lastImproving = n;}
 	public int getLastImproving() { return this.lastImproving; }
 	public int getCityNumber() { return nTour.length; }
-
-	//public void setTourLength(long tourLength) { this.tourLength = tourLength; }
 	public double getTourLength() { return tourLength; }
 	public int[] getTour() { return nTour; }
 

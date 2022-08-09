@@ -52,8 +52,8 @@ public class Problems {
     			  scan.nextDouble();
     	     		pos[s][0] = scan.nextDouble();
     	    		pos[s][1] = scan.nextDouble();
-    	    	 	System.out.print(pos[s][0]+"  ");
-    	    	 	System.out.println(pos[s][1]);
+    	    	 //	System.out.print(pos[s][0]+"  ");
+    	    	 	///System.out.println(pos[s][1]);
     	    		s++;
     	    		//points.add(new Point(s, pos[s][0], pos[s][1]));
     			    scan.nextLine();
@@ -131,19 +131,7 @@ public class Problems {
      			largestCluster = clusters.size() - 1;
      		}
      	}
-     	
-     /*	for (int i = 0; i < numOfCluster; i++) {//center of each cluster
-     		scan.nextInt();
-     	}
-     	int a = scan.nextInt();
-     	assert(a == -999);
-     	prize = new double[nodeNum];
-     	for (int i = 0; i < nodeNum; i++) {
-     		prize[i] = scan.nextDouble();
-     		//System.out.println(prize[i]);
-     	}
-     	a = scan.nextInt();
-     	assert(a == -999);*/
+ 
     }
   //to calculate the distance between cities
 

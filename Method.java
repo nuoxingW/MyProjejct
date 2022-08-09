@@ -7,9 +7,6 @@ public class Method {
 	Problems problem;
 	
   	public void calcuDistance() {
-  	    System.out.println("!11111111");
-  		System.out.println(problem.pos[0][0]+"Êý×é£¡£¡£¡£¡"+problem.pos[0][1]);
-
   		problem.dists = new double[problem.nodeNum][problem.nodeNum];
   		for (int i=0; i<problem.nodeNum;i++) {
   			for (int j=0; j<problem.nodeNum;j++) {
