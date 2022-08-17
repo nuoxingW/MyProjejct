@@ -15,185 +15,242 @@ import java.util.Scanner;
 import javax.sound.sampled.Line;
 
 public class Problems {
-	public static Problems problem = null;
-	public static String fileName = null;
-	public static ArrayList  points;
+	private Problems problem = null;
  
-	public static int  nodeNum=318;
-	public static double pos[][];
-	public static int[] clusterNum = new int[nodeNum];
-	public static  int lusterPos[] = new int[nodeNum];
-	public static int largestCluster ;
-	public static int  numOfCluster ;
-	public static double[][] dists;
-	public static int clusterPos[];
-	public static double[] prize;
-	public static FileReader data;
-	public  static void Problems(String fileName) throws FileNotFoundException,IOException {
-		Problems.fileName = fileName;	
+	private ArrayList  points;
+	private int  nodeNum;
+	private double pos[][];
+	private int[] clusterNum = new int[nodeNum];
+	private  int lusterPos[] = new int[nodeNum];
+	private int largestCluster ;
+	private int  numOfCluster ;
+	private double[][] dists;
+	private int clusterPos[];
+	private double[] prize;
+	private FileReader data;
+    private  ArrayList clusters;
+	public void read(String fileName) throws FileNotFoundException,IOException {	
+		System.out.println(fileName);
 		data = new FileReader(fileName);
   		Scanner scan = new Scanner(data);
-         readFileGTP(scan);
-         clusternum();
-  	} 
+  		readFileGTP(scan);
+        
+	}
  
  
 	
  //读取文件
-    public static void readFileGTP(Scanner scan) {
-    	 points = new ArrayList<>();
-         int count=0;
-         int s=0;
-        
-       	 pos = new double[nodeNum][2];
-    	  while(scan.hasNext()){
-    		  count++;
-    		  if(count>10){
-    			  scan.nextDouble();
-    	     		pos[s][0] = scan.nextDouble();
-    	    		pos[s][1] = scan.nextDouble();
-    	    	 //	System.out.print(pos[s][0]+"  ");
-    	    	 	///System.out.println(pos[s][1]);
-    	    		s++;
-    	    		//points.add(new Point(s, pos[s][0], pos[s][1]));
-    			    scan.nextLine();
-     			    if(s==317){
-    			    	System.out.println("跳出循环");
-    			    	break;
-    			    }
-    		  }else{		 
-    		     scan.nextDouble();
-    		  }
-    		  
-    	  }
-    	 
-    	// nodeNum=  scan.hasNext(); 
-    	 
-
-     	 //System.out.println(nodeNum);
-    
-
-/*    	for (int i = 1; i < nodeNum; i++) {
-     		pos[i][0] = scan.nextDouble();
-    		pos[i][1] = scan.nextDouble();
-    		System.out.println( pos[i][0]);
-    		System.out.println( pos[i][1]);
-    		
-    	}*/
-    	  Method method =new Method();;
-    	  method.calcuDistance();
-//    	dists = new double[nodeNum][nodeNum];
-//    	for (int i = 0; i < nodeNum; i++) {
-//    		for (int j = i + 1; j < nodeNum; j ++) {
-//    			double s = (pos[i][0] - pos[j][0]) * (pos[i][0] - pos[j][0]);
-//    			s += (pos[i][1] - pos[j][1]) * (pos[i][1] - pos[j][1]);
-//    			dists[i][j] = (int)(Math.sqrt(s) + 0.5);
-//    			dists[j][i] = dists[i][j];
-//    		}
-//    	}
-    //	scan.close();
-
-    }
-    
-    public static void clusternum() throws FileNotFoundException{
-		FileReader data1 = new FileReader("C:\\Users\\Nuoxing.W\\Desktop\\36LIN318.GTP.txt");
-  		Scanner scan = new Scanner(data1);
-        ArrayList clusters = new ArrayList();
-     	clusterNum = new int[nodeNum];
-     	clusterPos = new int[nodeNum];
-     	largestCluster = 0;
-        scan.skip("");
-        scan.skip("");
-      	int numOfCluster = scan.nextInt();
-  
-      	//System.out.println(numOfCluster+"===================");
-       	for (int i = 0; i < 1; i++) {
-     		List<Integer> c = new ArrayList<>();
-     		int m =  scan.nextInt();
-     		scan.nextLine();
-     	 //	System.out.println(m+"==========");
-     		for (int j = 0; j < m; j++) {
-     			scan.nextLine();
-     			int node =   scan.nextInt();
-/*     			System.out.println(node+"node");
-     			System.out.println(clusterNum.length+"length");0
-     			System.out.println(clusters.size()+"nodeNum");*/
-     	
-     			c.add(node - 1);		                                              
-     				clusterNum[node - 1] = clusters.size();
-     				System.out.println(c.size()+"size");
-     				System.out.println(node+"node");
-     				System.out.println(numOfCluster+"mmmm");
-         			clusterPos[node - 1] = c.size() - 1;	
-     		}
-     		clusters.add(c);
-     		if (c.size() > ((ArrayList) clusters.get(largestCluster)).size()) {
-     			largestCluster = clusters.size() - 1;
-     		}
-     	}
+	 private void readFileGTP(Scanner scan) {
+	    	points = new ArrayList<>();
+	    	nodeNum = scan.nextInt();
+	     	pos = new double[nodeNum][2];
+	    	for (int i = 0; i < nodeNum; i++) {
+	     		pos[i][0] = scan.nextDouble();
+	    		pos[i][1] = scan.nextDouble();
+	    		points.add(new Point(i, pos[i][0], pos[i][1]));
+	    	}
+	    	calcuDistance();
+	    	System.out.println("#3333333333");	    	
+	    	clusters = new ArrayList();
+	     	clusterNum = new int[nodeNum];
+	     	clusterPos = new int[nodeNum];
+	     	largestCluster = 0;
+	     	int numOfCluster = scan.nextInt();
+	     	for (int i = 0; i < numOfCluster; i++) {
+	     		List<Integer> c = new ArrayList<>();
+	     		int m = scan.nextInt();
+	     		System.out.println(m+"mmmmmmmm");
+      		for (int j = 0; j < m; j++) {
+	     			int node = scan.nextInt();
+	     			c.add(node - 1);
+	     			clusterNum[node - 1] = clusters.size();
+	     			System.out.println(clusters.size()+"cluster.size()");
+	     			clusterPos[node - 1] = c.size() - 1;
+	     		}
+	     		clusters.add(c);
+	     		if (c.size() > ((ArrayList) clusters.get(largestCluster)).size()) {
+	     			largestCluster = clusters.size() - 1;
+	     		}
+	     	}
+	     	
+	     	for (int i = 0; i < numOfCluster; i++) {//center of each cluster
+	     		scan.nextInt();
+	     	}
+	     	int a = scan.nextInt();
+	     	assert(a == -999);
+	     	prize = new double[nodeNum];
+	     	for (int i = 0; i < nodeNum; i++) {
+	     		prize[i] = scan.nextInt();
+	     		//System.out.println(prize[i]);
+	     	}
+	     	a = scan.nextInt();
+	     	assert(a == -999);
+	    }
+	    
+	  //to calculate the distance between cities
+	  	public void calcuDistance() {
+	  		dists = new double[nodeNum][nodeNum];
+	  		for (int i=0; i<nodeNum;i++) {
+	  			System.out.println(i+"i的数量");
+	  			for (int j=0; j<nodeNum;j++) {
+	  				System.out.println(j+"j的数量");
+	  				if (i==j) {
+	 					dists[i][j]=Integer.MAX_VALUE;
+	   				} else {
+	  					double distance;
+	  					distance = (pos[i][0]-pos[j][0]);
+	  					distance *= distance;
+	  					distance += (pos[i][1]-pos[j][1])*(pos[i][1]-pos[j][1]);
+	  					if (Solution.withPrice) {
+	  						distance = Math.ceil(Math.sqrt(distance/10.0));
+	  					} else {
+	  						distance = Math.sqrt(distance);
+	  					}
+						dists[i][j] = (int)(distance + 0.5);
+	  				}
+	  			}
+	  		}
+	  	}
+	    public static void main(String[] args) throws FileNotFoundException, IOException {      
+	        Problems problem =new Problems();
+            problem.read("D:\\23GR229.GTP");
+            System.out.println(problem.getNodeNum());
+	       // TODO Auto-generated method stub 
+	 	 
+	}
  
-    }
-  //to calculate the distance between cities
 
 
-class Item implements Comparable<Item>{
-	private int id;
-	private double value;
-	private double density;
-	private double weight;
-	
-	public Item(int id, double value, double weight) {
-		this.id = id;
-		this.value = value;
-		this.weight = weight;
-		density = value / weight;
-	}
-	
-	
-	
-	public int getID() { return id; }
-	public double getValue() { return value;}
-	public double getWeight() { return weight;}
-	public double getDensity() { return density; }
-
-
-
-	@Override
-	public int compareTo(Item o) {
-		if (this.density > o.density) {
-			return 1;
-		} else if (this.density == o.density) {
-			return 0;
-		} else {
-			return -1;
+		public ArrayList getPoints() {
+			return points;
 		}
-	}
-}
-	public static Problems getProblem() {
-		return problem;
-	}
 
 
 
-	public static void setProblem(Problems problem) {
-		Problems.problem = problem;
-	}
+		public void setPoints(ArrayList points) {
+			this.points = points;
+		}
 
 
 
-	public int getCityNumber() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		public int getNodeNum() {
+			return nodeNum;
+		}
 
 
 
-	public double evaluate(int[] nTour) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		public void setNodeNum(int nodeNum) {
+			this.nodeNum = nodeNum;
+		}
 
-	  	 
+
+
+		public double[][] getPos() {
+			return pos;
+		}
+
+
+
+		public void setPos(double[][] pos) {
+			this.pos = pos;
+		}
+
+
+
+		public int[] getClusterNum() {
+			return clusterNum;
+		}
+
+
+
+		public void setClusterNum(int[] clusterNum) {
+			this.clusterNum = clusterNum;
+		}
+
+
+
+		public int[] getLusterPos() {
+			return lusterPos;
+		}
+
+
+
+		public void setLusterPos(int[] lusterPos) {
+			this.lusterPos = lusterPos;
+		}
+
+
+
+		public int getLargestCluster() {
+			return largestCluster;
+		}
+
+
+
+		public void setLargestCluster(int largestCluster) {
+			this.largestCluster = largestCluster;
+		}
+
+
+
+		public int getNumOfCluster() {
+			return numOfCluster;
+		}
+
+
+
+		public void setNumOfCluster(int numOfCluster) {
+			this.numOfCluster = numOfCluster;
+		}
+
+
+
+		public double[][] getDists() {
+			return dists;
+		}
+
+
+
+		public void setDists(double[][] dists) {
+			this.dists = dists;
+		}
+
+
+
+		public int[] getClusterPos() {
+			return clusterPos;
+		}
+
+
+
+		public void setClusterPos(int[] clusterPos) {
+			this.clusterPos = clusterPos;
+		}
+
+
+
+		public double[] getPrize() {
+			return prize;
+		}
+
+
+
+		public void setPrize(double[] prize) {
+			this.prize = prize;
+		}
+
+
+
+		public ArrayList getClusters() {
+			return clusters;
+		}
+
+
+
+		public void setClusters(ArrayList clusters) {
+			this.clusters = clusters;
+		}  	 
+	    
 }
 
         
