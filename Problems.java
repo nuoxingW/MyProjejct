@@ -9,13 +9,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 import javax.sound.sampled.Line;
 
 public class Problems {
-	private Problems problem = null;
+	 
  
 	private ArrayList  points;
 	private int  nodeNum;
@@ -112,71 +113,77 @@ public class Problems {
 	  		}
 	  	}
 	    public static void main(String[] args) throws FileNotFoundException, IOException {      
-	        Problems problem =new Problems();
+/*	        Problems problem =new Problems();
             problem.read("D:\\23GR229.GTP");
-            System.out.println(problem.getNodeNum());
-	       // TODO Auto-generated method stub 
+            System.out.println(problem.getDists().length);
+            System.out.println(problem.getPos());
+            final Integer[] arr={1,2,3};
+            arr[0]=3;
+            System.out.println(Arrays.toString(arr));
+
+          final  int[]  list= problem.getClusterPos(); 
+            list[1]=2;
+            if (list != null) {  //如果数组不为空，执行下面的语句
+                for (int i = 0; i < list.length; i++) {     //for 循环遍历数组
+                    if (i < list.length - 1){         //如果数组下标不是最后一个
+                        System.out.println(list[i] + ", ");//输出下标对应的值和，
+                    } else {                                //如果是最后一个下标，输出对应的值
+                        System.out.println(list[i]);
+                    }
+                }
+            }
+            System.out.println(problem.getClusterPos()[1]); */
+ 
+ /*           if (problem.getPos() != null) {  //如果数组不为空，执行下面的语句
+                for (int i = 0; i < problem.getClusterPos().length; i++) {     //for 循环遍历数组
+                    if (i < problem.getClusterPos().length - 1) {         //如果数组下标不是最后一个
+                        System.out.print(problem.getClusterPos().toString() + ", ");//输出下标对应的值和，
+                    } else {                                //如果是最后一个下标，输出对应的值
+                        System.out.print(problem.getClusterPos().toString());
+                    }
+                }
+            }*/
 	 	 
 	}
+
+
  
-
-
-		public ArrayList getPoints() {
+	    private final ArrayList getPoints() {
 			return points;
 		}
-
-
-
-		public void setPoints(ArrayList points) {
-			this.points = points;
+        public Object getPoints(int i) {
+        	ArrayList  list=getPoints();
+        	 
+			return list ;
 		}
-
 
 
 		public int getNodeNum() {
 			return nodeNum;
 		}
 
+        
 
-
-		public void setNodeNum(int nodeNum) {
-			this.nodeNum = nodeNum;
-		}
-
-
-
-		public double[][] getPos() {
+		private final double[][] getPos() {
 			return pos;
 		}
-
-
-
-		public void setPos(double[][] pos) {
-			this.pos = pos;
+		
+		public  double  getPos(int i,int  j){
+		      double[][] list=getPos();  
+			  return list[i][j];
 		}
 
-
-
-		public int[] getClusterNum() {
+		private final int[] getClusterNum() {
 			return clusterNum;
 		}
-
-
-
-		public void setClusterNum(int[] clusterNum) {
-			this.clusterNum = clusterNum;
+		public  int  getClusterNum(int i){
+		      int [] list=getClusterNum();  
+			  return list[i];
 		}
 
 
-
-		public int[] getLusterPos() {
+		public   final int[]  getLusterPos() {
 			return lusterPos;
-		}
-
-
-
-		public void setLusterPos(int[] lusterPos) {
-			this.lusterPos = lusterPos;
 		}
 
 
@@ -187,70 +194,67 @@ public class Problems {
 
 
 
-		public void setLargestCluster(int largestCluster) {
-			this.largestCluster = largestCluster;
-		}
-
-
-
 		public int getNumOfCluster() {
 			return numOfCluster;
 		}
 
 
 
-		public void setNumOfCluster(int numOfCluster) {
-			this.numOfCluster = numOfCluster;
-		}
-
-
-
-		public double[][] getDists() {
+		private final double[][] getDists() {
 			return dists;
 		}
+		
+		public  double  getDists(int i,int j){
+			double [][] list=getDists();  
+			  return list[i][j];
+		}      
+        public int  getDistsLength(){
+        	return getDists().length;
+        }
 
 
-
-		public void setDists(double[][] dists) {
-			this.dists = dists;
-		}
-
-
-
-		public int[] getClusterPos() {
+		private final int[] getClusterPos() {
 			return clusterPos;
 		}
 
+		public  int  getClusterPos(int i){
+			int [] list=getClusterPos();  
+			  return list[i];
+		}    
+        public int  getClusterPosLength(){
+        	return getClusterPos().length;
+        }
 
-
-		public void setClusterPos(int[] clusterPos) {
-			this.clusterPos = clusterPos;
-		}
-
-
-
-		public double[] getPrize() {
+		private final double[] getPrize() {
 			return prize;
 		}
-
-
-
-		public void setPrize(double[] prize) {
-			this.prize = prize;
+		public double getPrize(int i) {
+			double [] list=getPrize();  
+			  return list[i];
 		}
+        public int  getPrizeLength(){
+        	return getPrize().length;
+        }
+
+		public FileReader getData() {
+			return data;
+		}
+      
 
 
-
-		public ArrayList getClusters() {
+		private final  ArrayList getClusters() {
 			return clusters;
 		}
+        public ArrayList  getClusters(int i) {
+			ArrayList list=getClusters(); 
+			  return list;
+		}
+        public int  getClustersLength(){
+        	return getClusters().size();
+        }
 
 
-
-		public void setClusters(ArrayList clusters) {
-			this.clusters = clusters;
-		}  	 
-	    
+		 
 }
 
         

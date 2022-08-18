@@ -25,10 +25,12 @@ public class Solution implements  Comparable<Solution> {
 
 	protected int[] nTour;
 	protected int[] pTour;
-	Problems problem;
+//	Problems problem;
   
-	public   int[] getNodenum(){
+	public   double getNodenum(){
+		Problems problem =new Problems();
         try {
+        
 			problem.read("D:\\23GR229.GTP");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -37,10 +39,14 @@ public class Solution implements  Comparable<Solution> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return problem.getClusterNum();
+        System.out.println(problem.getClustersLength()+"NX");
+		return problem.getPos(1, 1);
 	
 	}	
+	 public static void main(String[] args) {
+		 Solution s = new Solution();
+		 s.getNodenum();
+	}
 
  
 
