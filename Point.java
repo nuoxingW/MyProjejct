@@ -13,4 +13,16 @@ public Point(int num, double x, double y) {
 	this.x = x;
 	this.y = y;
 }
+public int getNum() {
+	return num;
+}
+public double getX() {
+	return x;
+}
+public double getY() {
+	return y;
+}
+public Point() {
+	super();
+}
 }
