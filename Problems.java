@@ -16,8 +16,6 @@ import java.util.Scanner;
 import javax.sound.sampled.Line;
 
 public class Problems {
-	 
- 
 	private ArrayList  points;
 	private int  nodeNum;
 	private double pos[][];
@@ -29,10 +27,9 @@ public class Problems {
 	private int clusterPos[];
 	private double[] prize;
 	private FileReader data;
-    private  ArrayList clusters;
+    private  List clusters;
 	public void read(String fileName) throws FileNotFoundException,IOException {	
-		System.out.println(fileName);
-		data = new FileReader(fileName);
+ 		data = new FileReader(fileName);
   		Scanner scan = new Scanner(data);
   		readFileGTP(scan);
         
@@ -51,7 +48,6 @@ public class Problems {
 	    		points.add(new Point(i, pos[i][0], pos[i][1]));
 	    	}
 	    	calcuDistance();
-	    	System.out.println("#3333333333");	    	
 	    	clusters = new ArrayList();
 	     	clusterNum = new int[nodeNum];
 	     	clusterPos = new int[nodeNum];
@@ -60,12 +56,11 @@ public class Problems {
 	     	for (int i = 0; i < numOfCluster; i++) {
 	     		List<Integer> c = new ArrayList<>();
 	     		int m = scan.nextInt();
-	     		System.out.println(m+"mmmmmmmm");
-      		for (int j = 0; j < m; j++) {
+       		for (int j = 0; j < m; j++) {
 	     			int node = scan.nextInt();
-	     			c.add(node - 1);
+ 	     		//	c.add(node - 1);
+	     			c.add(node-1);
 	     			clusterNum[node - 1] = clusters.size();
-	     			System.out.println(clusters.size()+"cluster.size()");
 	     			clusterPos[node - 1] = c.size() - 1;
 	     		}
 	     		clusters.add(c);
@@ -92,9 +87,9 @@ public class Problems {
 	  	public void calcuDistance() {
 	  		dists = new double[nodeNum][nodeNum];
 	  		for (int i=0; i<nodeNum;i++) {
-	  			System.out.println(i+"i的数量");
+	  			//System.out.println(i+"i的数量");
 	  			for (int j=0; j<nodeNum;j++) {
-	  				System.out.println(j+"j的数量");
+	  				//System.out.println(j+"j的数量");
 	  				if (i==j) {
 	 					dists[i][j]=Integer.MAX_VALUE;
 	   				} else {
@@ -113,9 +108,9 @@ public class Problems {
 	  		}
 	  	}
 	    public static void main(String[] args) throws FileNotFoundException, IOException {      
-/*	        Problems problem =new Problems();
+        Problems problem =new Problems();
             problem.read("D:\\23GR229.GTP");
-            System.out.println(problem.getDists().length);
+            /*	    System.out.println(problem.getDists().length);
             System.out.println(problem.getPos());
             final Integer[] arr={1,2,3};
             arr[0]=3;
@@ -148,14 +143,14 @@ public class Problems {
 
 
  
-	    private final ArrayList getPoints() {
+	    public  ArrayList getPoints() {
 			return points;
 		}
-        public Object getPoints(int i) {
+/*        public Object getPoints(int i) {
         	ArrayList  list=getPoints();
         	 
 			return list ;
-		}
+		}*/
 
 
 		public int getNodeNum() {
@@ -205,8 +200,9 @@ public class Problems {
 		}
 		
 		public  double  getDists(int i,int j){
-			double [][] list=getDists();  
-			  return list[i][j];
+			double [][] list=getDists();
+		    double  arc=	list[i][j];
+			  return arc;
 		}      
         public int  getDistsLength(){
         	return getDists().length;
@@ -239,18 +235,14 @@ public class Problems {
 		public FileReader getData() {
 			return data;
 		}
-      
 
+	    public  String getClusters() {
+	    	String str= clusters.toString();
+			return str;
+		}
 
-		private final  ArrayList getClusters() {
-			return clusters;
-		}
-        public ArrayList  getClusters(int i) {
-			ArrayList list=getClusters(); 
-			  return list;
-		}
         public int  getClustersLength(){
-        	return getClusters().size();
+        	return clusters.size();
         }
 
 
