@@ -28,6 +28,7 @@ public class Problems {
 	private double[] prize;
 	private FileReader data;
     private  List clusters;
+    private  int[] vex =new int[nodeNum];
 	public void read(String fileName) throws FileNotFoundException,IOException {	
  		data = new FileReader(fileName);
   		Scanner scan = new Scanner(data);
@@ -51,8 +52,10 @@ public class Problems {
 	    	clusters = new ArrayList();
 	     	clusterNum = new int[nodeNum];
 	     	clusterPos = new int[nodeNum];
+	     	vex =new int[nodeNum];
 	     	largestCluster = 0;
-	     	int numOfCluster = scan.nextInt();
+	     	int num=0;
+ 	     	int numOfCluster = scan.nextInt();
 	     	for (int i = 0; i < numOfCluster; i++) {
 	     		List<Integer> c = new ArrayList<>();
 	     		int m = scan.nextInt();
@@ -60,8 +63,10 @@ public class Problems {
 	     			int node = scan.nextInt();
  	     		//	c.add(node - 1);
 	     			c.add(node-1);
+ 	     	        vex[num]=node-1;
 	     			clusterNum[node - 1] = clusters.size();
 	     			clusterPos[node - 1] = c.size() - 1;
+	     		    num++;
 	     		}
 	     		clusters.add(c);
 	     		if (c.size() > ((ArrayList) clusters.get(largestCluster)).size()) {
@@ -83,7 +88,13 @@ public class Problems {
 	     	assert(a == -999);
 	    }
 	    
-	  //to calculate the distance between cities
+	  public int getVex(int i) {
+		return vex[i];
+	}
+
+
+
+		//to calculate the distance between cities
 	  	public void calcuDistance() {
 	  		dists = new double[nodeNum][nodeNum];
 	  		for (int i=0; i<nodeNum;i++) {
@@ -92,6 +103,7 @@ public class Problems {
 	  				//System.out.println(j+"jµÄÊýÁ¿");
 	  				if (i==j) {
 	 					dists[i][j]=Integer.MAX_VALUE;
+	 				//	System.out.println(dists[i][j]);
 	   				} else {
 	  					double distance;
 	  					distance = (pos[i][0]-pos[j][0]);
@@ -192,13 +204,12 @@ public class Problems {
 		public int getNumOfCluster() {
 			return numOfCluster;
 		}
-
-
-
-		private final double[][] getDists() {
+        private final double[][] getDists() {
 			return dists;
 		}
-		
+		public int  distLength(){
+			return dists.length;
+		}
 		public  double  getDists(int i,int j){
 			double [][] list=getDists();
 		    double  arc=	list[i][j];
