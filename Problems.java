@@ -118,6 +118,7 @@ public class Problems {
 	  				}
 	  			}
 	  		}
+	  	        System.out.println(dists);
 	  	}
 	    public static void main(String[] args) throws FileNotFoundException, IOException {      
         Problems problem =new Problems();
