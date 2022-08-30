@@ -11,6 +11,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.sound.sampled.Line;
@@ -29,15 +30,12 @@ public class Problems {
 	private FileReader data;
     private  List clusters;
     private  int[] vex =new int[nodeNum];
+    private  Map Nodemap=null;
 	public void read(String fileName) throws FileNotFoundException,IOException {	
  		data = new FileReader(fileName);
   		Scanner scan = new Scanner(data);
   		readFileGTP(scan);
-        
 	}
- 
- 
-	
  //读取文件
 	 private void readFileGTP(Scanner scan) {
 	    	points = new ArrayList<>();
@@ -55,7 +53,7 @@ public class Problems {
 	     	vex =new int[nodeNum];
 	     	largestCluster = 0;
 	     	int num=0;
- 	     	int numOfCluster = scan.nextInt();
+ 	     	numOfCluster = scan.nextInt();
 	     	for (int i = 0; i < numOfCluster; i++) {
 	     		List<Integer> c = new ArrayList<>();
 	     		int m = scan.nextInt();
@@ -64,6 +62,9 @@ public class Problems {
  	     		//	c.add(node - 1);
 	     			c.add(node-1);
  	     	        vex[num]=node-1;
+ 	     	        System.out.println(node-1);
+ 	     	        System.out.println(num);
+ 	     	        Nodemap.put(new Integer(num).toString(),new Integer(node).toString());
 	     			clusterNum[node - 1] = clusters.size();
 	     			clusterPos[node - 1] = c.size() - 1;
 	     		    num++;
@@ -88,13 +89,13 @@ public class Problems {
 	     	assert(a == -999);
 	    }
 	    
-	  public int getVex(int i) {
+	  public Map getNodemap() {
+		return Nodemap;
+	}
+	public int getVex(int i) {
 		return vex[i];
 	}
-
-
-
-		//to calculate the distance between cities
+		//to calculate the distance between node
 	  	public void calcuDistance() {
 	  		dists = new double[nodeNum][nodeNum];
 	  		for (int i=0; i<nodeNum;i++) {
@@ -118,64 +119,25 @@ public class Problems {
 	  				}
 	  			}
 	  		}
-	  	        System.out.println(dists);
+	  	    //    System.out.println(dists);
 	  	}
 	    public static void main(String[] args) throws FileNotFoundException, IOException {      
         Problems problem =new Problems();
-            problem.read("D:\\23GR229.GTP");
-            /*	    System.out.println(problem.getDists().length);
-            System.out.println(problem.getPos());
-            final Integer[] arr={1,2,3};
-            arr[0]=3;
-            System.out.println(Arrays.toString(arr));
-
-          final  int[]  list= problem.getClusterPos(); 
-            list[1]=2;
-            if (list != null) {  //如果数组不为空，执行下面的语句
-                for (int i = 0; i < list.length; i++) {     //for 循环遍历数组
-                    if (i < list.length - 1){         //如果数组下标不是最后一个
-                        System.out.println(list[i] + ", ");//输出下标对应的值和，
-                    } else {                                //如果是最后一个下标，输出对应的值
-                        System.out.println(list[i]);
-                    }
-                }
-            }
-            System.out.println(problem.getClusterPos()[1]); */
- 
- /*           if (problem.getPos() != null) {  //如果数组不为空，执行下面的语句
-                for (int i = 0; i < problem.getClusterPos().length; i++) {     //for 循环遍历数组
-                    if (i < problem.getClusterPos().length - 1) {         //如果数组下标不是最后一个
-                        System.out.print(problem.getClusterPos().toString() + ", ");//输出下标对应的值和，
-                    } else {                                //如果是最后一个下标，输出对应的值
-                        System.out.print(problem.getClusterPos().toString());
-                    }
-                }
-            }*/
-	 	 
+        problem.read("D:\\23GR229.GTP");
 	}
-
-
- 
 	    public  ArrayList getPoints() {
 			return points;
 		}
-/*        public Object getPoints(int i) {
-        	ArrayList  list=getPoints();
-        	 
-			return list ;
-		}*/
-
-
 		public int getNodeNum() {
 			return nodeNum;
 		}
-
-        
-
+		//获得簇的大小
+		public  int numOfCluster(){
+			return numOfCluster;
+		}
 		private final double[][] getPos() {
 			return pos;
 		}
-		
 		public  double  getPos(int i,int  j){
 		      double[][] list=getPos();  
 			  return list[i][j];
@@ -193,15 +155,9 @@ public class Problems {
 		public   final int[]  getLusterPos() {
 			return lusterPos;
 		}
-
-
-
 		public int getLargestCluster() {
 			return largestCluster;
 		}
-
-
-
 		public int getNumOfCluster() {
 			return numOfCluster;
 		}

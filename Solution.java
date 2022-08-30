@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
  
  
@@ -164,14 +165,36 @@ public class Solution implements  Comparable<Solution> {
          }
          return i;
      }
+     //其中每个簇包含的节点
+    public  String Get_Cluster(int i) throws FileNotFoundException, IOException{
+	    String arr=Getarr(problem.getClusters(), i);
+		return arr;
+	}
+    //确定起点和终点的距离
+    public   double   getDistance(int Start ,int end){
+        Map map= problem.getNodemap(); 
+        Object node= map.get(Start);
+        int Num=Integer.valueOf(node.toString());
+        Object node1= map.get(end);
+        int Num1=Integer.valueOf(node1.toString());
+        return  matrix[Num][Num1];
+    }
+    //从中获得节点号
+    public  int   getNode(int nodeNum){
+    	  Map map= problem.getNodemap(); 
+          Object node= map.get(nodeNum);
+          int Num=Integer.valueOf(node.toString());
+          return  Num;   	
+    }
      public static void main(String[] args) throws FileNotFoundException, IOException {
             Solution s=new Solution();
+            Methods method=new Methods();
             problem.read(fileName);
-            int num=problem.getNodeNum();
-             s.createEdge(num);
-             s.FindminTree(num);
-        
-        
-
+   /*         Get_Cluster(1);
+            Get_Cluster.Choose();*/
+ 
+            System.out.println(problem.numOfCluster()); 
+            String a= s.Get_Cluster(1);
+            System.out.println(a); 
    }
 }
