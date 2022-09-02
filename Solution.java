@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
  
  
@@ -103,7 +105,7 @@ public class Solution implements  Comparable<Solution> {
                  //例如 C D线段 ,m的值就是C在tends集合中的索引位置，n就是D在tends集合中m索引位置的值
                  tends[m] = n;
                  rets[index++] = edges1[i];   
-                 System.out.println(edges1[i].weight+","+edges1[i].start+","+edges1[i].end);
+                 //System.out.println(edges1[i].weight+","+edges1[i].start+","+edges1[i].end);
              }
          }
          int length = 0;
@@ -171,12 +173,20 @@ public class Solution implements  Comparable<Solution> {
 		return arr;
 	}
     //确定起点和终点的距离
-    public   double   getDistance(int Start ,int end){
-        Map map= problem.getNodemap(); 
-        Object node= map.get(Start);
-        int Num=Integer.valueOf(node.toString());
-        Object node1= map.get(end);
-        int Num1=Integer.valueOf(node1.toString());
+    public   double   getDistance(int Start ,int end,HashMap map,double[] []matrix){
+     	//System.out.println(Start);
+    	String Start1=Start+"";
+    	String node= map.get(Start1).toString();
+      //  System.out.println(node+"NODE");
+        int Num=Integer.parseInt(node); 
+    	String end1=end+"";
+         String node1= map.get(end1).toString();
+       // int Num1=Integer.valueOf(node1.toString());
+        int Num1=Integer.parseInt(node1); 
+ 	      System.out.println(node+"------>"+node1);
+
+       // System.out.println(matrix);
+        System.out.println(matrix[Num][Num1]);
         return  matrix[Num][Num1];
     }
     //从中获得节点号
@@ -189,12 +199,22 @@ public class Solution implements  Comparable<Solution> {
      public static void main(String[] args) throws FileNotFoundException, IOException {
             Solution s=new Solution();
             Methods method=new Methods();
-            problem.read(fileName);
+           
+              problem.read(fileName);
+             HashMap map= problem.getNodemap();
+        //   System.out.println(map.get("5").toString()); 
+            
+        
+            int num=  problem.getNumOfCluster();
+            System.out.println(num);
+            int num1= problem.getNodeNum();
+            s.createEdge(num1);
+            method.Choose(num,map,matrix);
+
    /*         Get_Cluster(1);
             Get_Cluster.Choose();*/
- 
-            System.out.println(problem.numOfCluster()); 
-            String a= s.Get_Cluster(1);
-            System.out.println(a); 
+        //    System.out.println(problem.numOfCluster()); 
+         //   String a= s.Get_Cluster(1);
+           // System.out.println(a); 
    }
 }

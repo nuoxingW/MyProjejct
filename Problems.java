@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -29,8 +30,9 @@ public class Problems {
 	private double[] prize;
 	private FileReader data;
     private  List clusters;
+    private   HashMap Nodemap =  new HashMap();
+
     private  int[] vex =new int[nodeNum];
-    private  Map Nodemap=null;
 	public void read(String fileName) throws FileNotFoundException,IOException {	
  		data = new FileReader(fileName);
   		Scanner scan = new Scanner(data);
@@ -38,6 +40,7 @@ public class Problems {
 	}
  //¶ÁÈ¡ÎÄ¼þ
 	 private void readFileGTP(Scanner scan) {
+
 	    	points = new ArrayList<>();
 	    	nodeNum = scan.nextInt();
 	     	pos = new double[nodeNum][2];
@@ -61,10 +64,9 @@ public class Problems {
 	     			int node = scan.nextInt();
  	     		//	c.add(node - 1);
 	     			c.add(node-1);
- 	     	        vex[num]=node-1;
- 	     	        System.out.println(node-1);
- 	     	        System.out.println(num);
- 	     	        Nodemap.put(new Integer(num).toString(),new Integer(node).toString());
+ 	     	        vex[num]=node-1;           
+ 	     	     //   Nodemap.put("1", node);
+ 	     	       Nodemap.put(new Integer(node-1).toString(),String.valueOf(num));
 	     			clusterNum[node - 1] = clusters.size();
 	     			clusterPos[node - 1] = c.size() - 1;
 	     		    num++;
@@ -88,8 +90,7 @@ public class Problems {
 	     	a = scan.nextInt();
 	     	assert(a == -999);
 	    }
-	    
-	  public Map getNodemap() {
+	public HashMap getNodemap() {
 		return Nodemap;
 	}
 	public int getVex(int i) {
