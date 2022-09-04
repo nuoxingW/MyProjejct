@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.tools.DocumentationTool.DocumentationTask;
+
  
  
 
@@ -105,7 +107,7 @@ public class Solution implements  Comparable<Solution> {
                  //例如 C D线段 ,m的值就是C在tends集合中的索引位置，n就是D在tends集合中m索引位置的值
                  tends[m] = n;
                  rets[index++] = edges1[i];   
-                 //System.out.println(edges1[i].weight+","+edges1[i].start+","+edges1[i].end);
+                 System.out.println(edges1[i].weight+","+edges1[i].start+","+edges1[i].end);
              }
          }
          int length = 0;
@@ -169,11 +171,13 @@ public class Solution implements  Comparable<Solution> {
      }
      //其中每个簇包含的节点
     public  String Get_Cluster(int i) throws FileNotFoundException, IOException{
+    	System.out.println(i);
 	    String arr=Getarr(problem.getClusters(), i);
+	  //  System.out.println(arr);
 		return arr;
 	}
     //确定起点和终点的距离
-    public   double   getDistance(int Start ,int end,HashMap map,double[] []matrix){
+    public   double   getDistance(int Start ,int end,HashMap map,double[] []matrix,boolean flag){
      	//System.out.println(Start);
     	String Start1=Start+"";
     	String node= map.get(Start1).toString();
@@ -183,11 +187,29 @@ public class Solution implements  Comparable<Solution> {
          String node1= map.get(end1).toString();
        // int Num1=Integer.valueOf(node1.toString());
         int Num1=Integer.parseInt(node1); 
- 	      System.out.println(node+"------>"+node1);
+        if(flag== true){
+   	      System.out.println((Integer.valueOf(node)+1)+"------>"+(Num1+1)+"");
 
-       // System.out.println(matrix);
-        System.out.println(matrix[Num][Num1]);
+        }
+        //System.out.println(matrix[Num][Num1]);
         return  matrix[Num][Num1];
+    }
+    //确定一个顶点遍历与它相连的顶点
+    public   double   getOneDistance(int Start ,HashMap map,double[] []matrix){
+     	//System.out.println(Start);
+    	String Start1=Start+"";
+    	String node= map.get(Start1).toString();
+        double  distance=0;
+        double  distance1=Integer.MAX_VALUE;
+      //  System.out.println(node+"NODE");
+        int Num=(Integer.parseInt(node)-1); 
+         for (int i = 0; i < matrix.length; i++) {
+        	 distance= matrix[Num][i];
+        	 if(distance<distance1){
+        	    distance1=distance;	 
+        	 }
+		}
+        return  distance1;
     }
     //从中获得节点号
     public  int   getNode(int nodeNum){
