@@ -40,7 +40,7 @@ public class Methods {
  	 			for(int J=0;J<nodeList.length+1;J++){
  	 				//	System.out.println(i);
  	 				//	System.out.println(J);
- 	 				 int end=ChooseNodeofCluster(solution.Get_Cluster(i), J);
+ 	 				  int end=ChooseNodeofCluster(solution.Get_Cluster(i), J);
  	 				  String key1=getKeysByLoop(map, end).toString().trim().replace("[", "");
  	 				  key1=key1.trim().replace("]", "");
  	 	             double max=	 solution.getDistance(Integer.parseInt(key.trim()),Integer.parseInt(key1.trim()),map,matrix,false);
