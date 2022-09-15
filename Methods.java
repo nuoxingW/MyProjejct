@@ -2,8 +2,10 @@ package Myproject;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -15,107 +17,84 @@ import javax.swing.plaf.synth.SynthSeparatorUI;
 import org.omg.PortableInterceptor.INACTIVE;
 import org.w3c.dom.NodeList;
 
+
 public class Methods {
    	static Solution solution=new Solution();
    	static Problems  problem =new Problems();
-	//从每个个簇中选择一个顶点
-	  public  Solution  Choose(int numOfCluster,HashMap map,double[][] matrix) throws FileNotFoundException, IOException{
-        String KeyFB2 = null;
-        String keyFB = null;
-        String nodeString ="";//记录只有一个顶点的簇
- 	    double  distance=Integer.MAX_VALUE;
- 	    double distance1=0;
- 	    double length = 0;
-		for(int i=0;i<numOfCluster;i++){		 
-		String nodeList[]=ChooseNode(solution.Get_Cluster(i));
- 		//System.out.println(nodeList+"nodelist");
- 		 int start=ChooseNodeofCluster(solution.Get_Cluster(i), 0);
- 		  String key=getKeysByLoop(map, start).toString().trim().replace("[", "");
- 		   key =key.replace("]", "");
- 		   if(nodeList.length==0){
- 			 //  System.out.println(nodeList);
- 			    nodeString+=","+i;
- 			    System.out.println("该簇只有一个顶点");
- 		   }else{
- 	 			for(int J=0;J<nodeList.length+1;J++){
- 	 				//	System.out.println(i);
- 	 				//	System.out.println(J);
- 	 				  int end=ChooseNodeofCluster(solution.Get_Cluster(i), J);
- 	 				  String key1=getKeysByLoop(map, end).toString().trim().replace("[", "");
- 	 				  key1=key1.trim().replace("]", "");
- 	 	             double max=	 solution.getDistance(Integer.parseInt(key.trim()),Integer.parseInt(key1.trim()),map,matrix,false);
- 	 	               if(max<distance){
- 	 	               	 KeyFB2= key1;
- 	 	               	  keyFB= key;	 
- 	 	               }
- 	 	               if(J == nodeList.length){
- 	 	            	max= solution.getDistance(Integer.parseInt(keyFB.trim()),Integer.parseInt(KeyFB2.trim()),map,matrix,true); 
- 	 	            	length+=max;
- 	 	               }
- 	 				}  
- 		   }
-		}
-		   System.out.println(matrix.length+"problem.getNodeNum()"); 
-		    String[] oneNodearr = nodeString.trim().split(",");  
-		  for (int j = 0; j < oneNodearr.length; j++) {
-			  System.out.println(oneNodearr[j]);
-			  if (!oneNodearr[j].equals("")) {
-					  int node= Integer.valueOf(Integer.valueOf(oneNodearr[j])); 
-					 //  distance= solution.getOneDistance(node, map, matrix);
-					  distance1+=solution.getOneDistance(node, map, matrix);
-		    	}
-			}
-		System.out.println(distance1);
-		System.out.println(length);
-		return null;  
-	  }
-	  public  static String[] ChooseNode(String nodeNumString){
-		   Random random = new Random();
-		   String[] nodeList = nodeNumString.trim().split(","); 
-		   int num = random.nextInt(nodeList.length) ;
-		   //System.out.println(num);
- 		   String Node=nodeList[num];
- 		   //System.out.println(Node);
-		   nodeList= remove(nodeList, Node);
-	       return nodeList;
-	  }
-	  public  static int ChooseNodeofCluster(String nodeNumString,int num){
-		   String[] nodeList = nodeNumString.trim().split(","); 
-		//   System.out.println(nodeList[num]);
-           String Node=nodeList[num];
-           //System.out.println(Node);
-           int Node1=Integer.valueOf(Node.trim());
-	       return Node1;
-	  }
-	  //移除某个元素
-	  private static String[] remove(String[] arr, String num) {
-		  String[] tmp = new String[arr.length - 1];
-	        int idx = 0;
-	        boolean hasRemove = false;
-	        for (int i = 0; i < arr.length; i++) {
-	 
-	            if (!hasRemove && arr[i] == num) {
-	                hasRemove = true;
-	                continue;
-	            }
-	 
-	            tmp[idx++] = arr[i];
-	        }
-	 
-	        return tmp;
-	    } 
-
-     private <K, V> Set<K> getKeysByLoop(HashMap<Integer, String> map, V value) {
-		    Set keys = new HashSet<>();
-		    for (Entry entry : map.entrySet()) {
-		    	//System.out.println(entry.getValue()+"|");
-		        if (entry.getValue().equals(value.toString())) {
-		        //	System.out.println(entry.getKey()+"entry.getKey()");
-		            keys.add(entry.getKey());
-		        }
-		    }
-		    return keys;
-		}
+	protected static String fileName="D:\\23GR229.GTP";
+   	static double  minLength=Integer.MAX_VALUE;//定义一个最优的最短路径
+    static int Temperature=50000; //退火初始温度
+    static double  q = 0.95;
+    static int  L = 1000; //一个温度迭代的次数
+    static double e=Math.E;
+    static double T_end  =Math.pow(e, -8);
+    static double prob = 0;
+    static int  times = 400;
+    static String  Tpos[];
+    private static double findOptimaltree() throws FileNotFoundException, IOException{
+        int num=problem.getClustersLength();
+        Tpos = new String[num];
+        Tpos=null;
+        Random random =new Random();
+        double Ntemperature=Temperature;
+        HashMap map=solution.getSolution(null);
+        while(Ntemperature>T_end){
+        //for这里还要个for循环
       
- 
+         for (int j = 0; j <10000; j++) {
+        	 //System.out.println(map.get("length").toString());;
+             Double length=Double.valueOf(map.get("length").toString());
+              if (Tpos!=null) {
+            	  int i=random.nextInt(num);
+            	  int b=random.nextInt(num);
+                	 ArrayList <String> temp=solution.findSwap(i, b, Tpos);
+                    map=  solution.getSolution(temp);
+                    length=Double.valueOf(map.get("length").toString());
+//                    System.out.println(Math.exp(length-minLength)/Ntemperature);
+                    prob=random.nextDouble();
+	               if(length<minLength){
+	            	 System.out.println("当前长度小于之前最优解，直接更新为新解,之前长度为"+minLength+"更新后长度为"+length);
+	                minLength=length;	
+	          	    Tpos  = map.get("arr").toString().substring(1,map.get("arr").toString().length()-1).trim().split(",");
+	               }else if(length>minLength&&prob<1/Math.exp(length-minLength)/Ntemperature){
+		            System.out.println("当前长度大于之前最优解，以一定概率更新为新解,之前长度为"+minLength+",更新后长度为"+length);
+	                minLength=length;
+	  	           Tpos  = map.get("arr").toString().substring(1,map.get("arr").toString().length()-1).trim().split(",");
+	              }
+  	         	Ntemperature*=q;	
+		      }else{
+		    	    minLength=length;	
+	                Tpos  = map.get("arr").toString().substring(1,map.get("arr").toString().length()-1).split(",");
+ 	                 //System.out.println(Tpos);
+  	            	 Ntemperature*=q;	  
+		      }
+          }
+    	}
+        System.out.println(Ntemperature);
+        System.out.println(minLength);
+        System.out.println(Tpos);
+     	return minLength;
+    }
+
+    
+    
+   public static void main(String[] args) throws FileNotFoundException, IOException {
+/*        Random random =new Random();
+         for (int i = 0; i <100; i++) {
+            System.out.println(random.nextInt(13));
+
+		}*/
+       problem.read(fileName);
+      Methods.findOptimaltree();
+  	    
+       
+  	   //System.out.println(a);
+
+      // int num=problem.getClustersLength();
+      // System.out.println(num); 
+
+	 /*  Solution s=new Solution();
+	   Methods method=new Methods();
+	  System.out.println(method.findOptimaltree()+"最终数据"); */
+   }
 }

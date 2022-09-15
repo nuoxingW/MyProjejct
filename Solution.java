@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import javax.swing.text.AbstractDocument.LeafElement;
 import javax.tools.DocumentationTool.DocumentationTask;
 
  
@@ -21,10 +22,10 @@ import javax.tools.DocumentationTool.DocumentationTask;
 
 public class Solution implements  Comparable<Solution> {
 	public static boolean withPrice;
-	private int[] tops;   // 顶点集合
+	private static int[] tops;   // 顶点集合
 	static Problems problem=new Problems();
-    private static  double[][] matrix;    /**边集数组*/
-    private ArrayList<EData> list=new ArrayList<>();
+    private static  double[][] matrix;   /**边集数组*/
+    private static ArrayList<EData> list=new ArrayList<>();
 	protected static String fileName="D:\\23GR229.GTP";
   //边的结构体
     private static class EData implements  Comparable<EData> {
@@ -41,13 +42,15 @@ public class Solution implements  Comparable<Solution> {
             return (int) (this.weight - o.weight);
         }
     };
-    
+    public static double[][] getMatrix() {	
+		return matrix;
+	}
 	//矩阵获得某两点之间的距离
 	private static double Get_arc(int i,int j) throws FileNotFoundException, IOException{
  		return problem.getDists(i, j);
 	}
 	//某个簇集群包含的节点号
-	public  String Getarr(String arrString,int i) throws FileNotFoundException, IOException{ 
+	private static  String Getarr(String arrString,int i) throws FileNotFoundException, IOException{ 
 	    String[]  arr=problem.getClusters().split("],");
 		   for(int j=0 ; j<arr.length;j++){
 				  arr[j]= arr[j].replace("[", "");
@@ -56,7 +59,7 @@ public class Solution implements  Comparable<Solution> {
 		return arr[i];
 	}
 	// 节点号 所对应的X,Y坐标
-	public  String  getNodexy(int i) throws FileNotFoundException, IOException{
+	private static  String  getNodexy(int i) throws FileNotFoundException, IOException{
 		 ArrayList<Point> array=new ArrayList<>();
 	     array=problem.getPoints();
 	     Point piont=array.get(i);
@@ -69,9 +72,30 @@ public class Solution implements  Comparable<Solution> {
           return 1;
 	}
 	 // 初始化"顶点数"和"边数"
-     private void createEdge(int index) throws FileNotFoundException, IOException {
+     public static void createEdge(int index,Problems pro) throws FileNotFoundException, IOException {
+    	//System.out.println(index);
      	tops= new int[index]; 
         for(int i=0;i<index;i++){
+        	//System.out.println(pro.getVex(1)+"problem.getVex(0)");
+        	//System.out.println();
+             tops[i]= pro.getVex(i);  
+        }
+        matrix = new double[index][index];
+        for(int i=0;i<index;i++){
+            for(int j=0;j<index;j++){
+            	matrix[i][j]=Get_arc(i, j);
+            	//System.out.println(matrix[i][j]+"Weight");
+              }
+         }
+       // System.out.println(matrix);
+    }
+	 // 初始化"顶点数"和"边数"
+     public static  void createEdge(int index) throws FileNotFoundException, IOException {
+    	//System.out.println(index);
+     	tops= new int[index]; 
+        for(int i=0;i<index;i++){
+        	//System.out.println(problem.getVex(1)+"problem.getVex(0)");
+        	//System.out.println();
              tops[i]= problem.getVex(i);  
         }
         matrix = new double[index][index];
@@ -83,8 +107,7 @@ public class Solution implements  Comparable<Solution> {
          }
        // System.out.println(matrix);
     }
-   
-     private int getPosition(int ch) {
+     private static int getPosition(int ch) {
     	// System.out.println(ch);
          for(int i=0; i<tops.length; i++){
              if(tops[i]==ch){
@@ -93,7 +116,7 @@ public class Solution implements  Comparable<Solution> {
          }
          return -1;
      }
-     private EData[] getEdges(int nodeNum,HashMap map,int a[],int b[]) throws FileNotFoundException, IOException {
+     private static EData[] getEdges(int nodeNum,HashMap map,int a[],int b[]) throws FileNotFoundException, IOException {
          int index=0;
          EData[] edges;
          int num=nodeNum*nodeNum;
@@ -103,15 +126,22 @@ public class Solution implements  Comparable<Solution> {
               //   if (matrix[i][j]!=Integer.MAX_VALUE) {
                 	 //System.out.println(tops[i]+","+tops[j]);
             	 //System.out.println(a[i]+"|"+a[j]+"|");
-            	// System.out.println(Integer.valueOf(map.get(b[i]).toString()));
-                     edges[index++] = new EData(a[i], a[j], matrix[Integer.valueOf(map.get(b[i]).toString())][Integer.valueOf(map.get(b[j]).toString())]);
+            	 //System.out.println(a);
+            	 //System.out.println(b);
+            	// System.out.println(b[j]+"bj");
+            	// System.out.println(map);
+            	// String temp=b[j]+"";
+            //	  System.out.println(Integer.valueOf(map.get(b[j]+"").toString())+"kongwlcc");
+            	 //System.out.println(matrix);
+            	 //System.out.println(matrix[Integer.valueOf(map.get(b[i]+"").toString())][Integer.valueOf(map.get(b[j]+"").toString())]);
+                     edges[index++] = new EData(a[i], a[j], matrix[Integer.valueOf(map.get(b[i]+"").toString())][Integer.valueOf(map.get(b[j]+"").toString())]);
                 //  }
              }
          }
   
          return edges;
      }
-     private ArrayList<EData> sortEdges(EData[] edges, int elen) {
+     private static ArrayList<EData> sortEdges(EData[] edges, int elen) {
     	// List<Object> list=new ArrayList<>();
     	 double  [] weight = new  double [elen];
     	 //	 System.out.println("下一行");
@@ -126,67 +156,32 @@ public class Solution implements  Comparable<Solution> {
      	 return list; 
      	 
      }
-     private int getEnd(int[] tends, int i) {
+     private static int getEnd(int[] tends, int i) {
          while (tends[i] != 0){
              i = tends[i];
          }
          return i;
      }
      //其中每个簇包含的节点
-    public  String Get_Cluster(int i) throws FileNotFoundException, IOException{
+    private static  String Get_Cluster(int i) throws FileNotFoundException, IOException{
      //	System.out.println(i);
 	    String arr=Getarr(problem.getClusters(), i);
 	  //  System.out.println(arr);
 		return arr;
 	}
-    //确定起点和终点的距离
-    public   double   getDistance(int Start ,int end,HashMap map,double[] []matrix,boolean flag){
-     	//System.out.println(Start);
-    	String Start1=Start+"";
-    	String node= map.get(Start1).toString();
-      //  System.out.println(node+"NODE");
-        int Num=Integer.parseInt(node); 
-    	String end1=end+"";
-         String node1= map.get(end1).toString();
-       // int Num1=Integer.valueOf(node1.toString());
-        int Num1=Integer.parseInt(node1); 
-        if(flag== true){
-   	      System.out.println((Integer.valueOf(node)+1)+"------>"+(Num1+1)+"");
-
-        }
-        //System.out.println(matrix[Num][Num1]);
-        return  matrix[Num][Num1];
-    }
-    //确定一个顶点遍历与它相连的顶点
-    public   double   getOneDistance(int Start ,HashMap map,double[] []matrix){
-     	//System.out.println(Start);
-    	String Start1=Start+"";
-    	String node= map.get(Start1).toString();
-        double  distance=0;
-        double  distance1=Integer.MAX_VALUE;
-      //  System.out.println(node+"NODE");
-        int Num=(Integer.parseInt(node)-1); 
-         for (int i = 0; i < matrix.length; i++) {
-        	 distance= matrix[Num][i];
-        	 if(distance<distance1){
-        	    distance1=distance;	 
-        	 }
-		}
-        return  distance1;
-    }
     //从中获得节点号
-    public  int   getNode(int nodeNum){
+    private static  int   getNode(int nodeNum){
     	  Map map= problem.getNodemap(); 
           Object node= map.get(nodeNum);
           int Num=Integer.valueOf(node.toString());
           return  Num;   	
     }
     //将字符串转为簇的数组
-	  public  static String[] ChooseNode(String nodeNumString){
+	 private   static String[] ChooseNode(String nodeNumString){
 		   String[] nodeList = nodeNumString.trim().split(",");  
 	       return nodeList;
 	  }
-    public  ArrayList<Integer>  Choose(int numOfCluster,double[][] matrix) throws FileNotFoundException, IOException{
+     public static  ArrayList<Integer>  Choose(int numOfCluster,double[][] matrix) throws FileNotFoundException, IOException{
  	    ArrayList<Integer> arr=new ArrayList<>();//创建一个容器的存放每个簇中的一个顶点
 		for(int i=0;i<numOfCluster;i++){		 
 	  	String nodeList[]=ChooseNode(Get_Cluster(i));
@@ -201,17 +196,17 @@ public class Solution implements  Comparable<Solution> {
            return arr;
 	  }
 	  //从每个簇中随机选择一个顶点
-	  public  static int ChooseNodeofCluster(String nodeNumString,int num){
+	 private  static int ChooseNodeofCluster(String nodeNumString,int num){
 		   String[] nodeList = nodeNumString.trim().split(","); 
            String Node=nodeList[num];
            int Node1=Integer.valueOf(Node.trim());
 	       return Node1;
 	  }
-     private <K, V> Set<K> getKeysByLoop(HashMap<Integer, String> map, V value) {
+     private static <K, V> Set<K> getKeysByLoop(HashMap<Integer, String> map, V value) {
 		    Set keys = new HashSet<>();
 		    for (Entry entry : map.entrySet()) {
 		    	//System.out.println(entry.getValue()+"|");
-		        if (entry.getValue().equals(value.toString())) {
+		        if (entry.getValue().equals(value.toString().trim())) {
 		        //	System.out.println(entry.getKey()+"entry.getKey()");
 		            keys.add(entry.getKey());
 		        }
@@ -219,51 +214,20 @@ public class Solution implements  Comparable<Solution> {
 	 	    return keys;
 	 }
      //节点号与距离数组中的对应关系
-     public  HashMap  getMap(ArrayList arr,HashMap map){
+     public static   HashMap  getMap(ArrayList arr,HashMap map){
       	 HashMap map1=new HashMap();
          for(int i=0;i<arr.size();i++){
         	String value= getKeysByLoop(map, arr.get(i)).toString().trim().replace("[", "").replace("]", "");
-        	map1.put(arr.get(i), value);
+        	map1.put(arr.get(i).toString().trim(),value);
+        	//System.out.println(matrix);
          }
-    	 return map1;	
+         //System.out.println(map1);
+     	 return map1;
+    	 
      }
      
-     //生成最小广义生成树的一个解     map是对应关系的map key是素组对应 value是节点号  map1
-     public void  getSolution(HashMap<Integer, String> map,int num) throws FileNotFoundException, IOException{    
-    	 int [] a = null;
-    	 int [] b = null;
-    	 int FB = 0;
-    	 int FB2 = 0;
-    	 int  count=0;
-         double minDistance=Integer.MAX_VALUE;
-    	 double distance=0;
-    	 a= new int[num]; 
-    	 b= new int[num]; 
-    	 Set keys = new HashSet();
-		   for (Entry entry : map.entrySet()) {
-			//   System.out.println(entry.getValue().toString());
-			   String temp=entry.getValue().toString();
-		     a[count]=	 Integer.valueOf(temp.trim().toString()); //节点
-		     b[count]=	 Integer.valueOf(entry.getKey().toString()); //节点
-
-              count++;	 
-		    }
-/*		 for(int i=0;i<a.length;i++){
-			 for(int j=0;j<a.length;j++){
-			      distance= matrix[i][j];
-			     if(distance<minDistance){
-			    	 FB=i;
-			    	 FB2=j;
-			    	 minDistance=distance;
-			     }
-			     if(j==a.length){	  
-			   	      System.out.println(map.get(i).toString()+"------>"+map.get(j).toString()+"");	 
-			     }
-			 }
-		 }*/
-		   FindminTree(count, map, a,b);
-     }
-     public void FindminTree(int nodeNum,HashMap map,int a[],int b[]) throws FileNotFoundException, IOException {
+    
+     private static double FindminTree(int nodeNum,HashMap map,int a[],int b[]) throws FileNotFoundException, IOException {
          int index = 0;   
          int[] tends = new int[nodeNum*nodeNum];     // 用于保存"已有最小生成树"中每个顶点在该最小树中的终点。
          EData[] rets = new EData[nodeNum*nodeNum];   
@@ -290,35 +254,102 @@ public class Solution implements  Comparable<Solution> {
                  //例如 C D线段 ,m的值就是C在tends集合中的索引位置，n就是D在tends集合中m索引位置的值
                  tends[m] = n;
                  rets[index++] = edges1[i];   
-                 System.out.println(edges1[i].start+","+edges1[i].end);
+                 //System.out.println(edges1[i].start+","+edges1[i].end);
              }
          }
-         int length = 0;
+         double length = 0;
          for (int i = 0; i < index; i++){
              length += rets[i].weight;
          }
-         //System.out.print(length);
-/*         for (int i = 0; i < index; i++){
-          System.out.print(rets[i].start+","+rets[i].end);
-            
-         }*/
-         System.out.printf("\n"); 
-         System.out.println("结束");
-         System.out.printf("\n"); 
+         //System.out.printf("\n"); 
+         //System.out.println("结束");
+         //System.out.printf("\n"); 
+         return length;
      }
+     //生成最小广义生成树的一个解     map是对应关系的map key是素组对应 value是节点号  map1
+     public static double  getSolution(HashMap<Integer, String> map,int num,ArrayList arr) throws FileNotFoundException, IOException{    
+    	 int [] a = null;
+    	 int [] b = null;
+    	 int  count=0;
+         double minDistance=Integer.MAX_VALUE;
+    	 double distance=0;
+    	 a= new int[num]; 
+    	 b= new int[num]; 
+    	 Set keys = new HashSet();
+		   for (Entry entry : map.entrySet()) {
+			//   System.out.println(matrix);
+			 // System.out.println(entry.getValue().toString());
+			 String temp=entry.getValue().toString().trim();
+		     a[count]=	 Integer.valueOf(temp.trim().toString()); //位置
+		     //System.out.println(a[count]);
+		     b[count]=	 Integer.valueOf(entry.getKey().toString().trim()); //节点
+		     //System.out.println(b[count]);
+              count++;	 
+		    }
+			double length = 0;
+		   for(int k=0;k<num-1;k++){
+			//   System.out.println(matrix[28][182]);
+			 //  System.out.println(a[k]+","+a[k+1]);
+			//   System.out.println(k+"k");
+             length+=matrix[a[k]][a[k+1]];		
+		   } 
+		   if(arr==null){
+			      length =   FindminTree(count, map, a,b);   
+		   }
+		return length;
+     }
+     public static HashMap getSolution(ArrayList arr) throws FileNotFoundException, IOException{
+    	 //System.out.println(arr);
+         problem.read(fileName);
+         int num=  problem.getNumOfCluster();
+         HashMap  map= problem.getNodemap();
+         int num1= problem.getNodeNum();
+         createEdge(num1);
+        if(arr==null){
+              arr=  Choose(num,matrix); 
+        }
+         //System.out.println(arr);
+         HashMap map1= getMap(arr, map);
+         //System.out.println(map1);
+         double length= getSolution(map1,num,arr);
+         HashMap map2=new HashMap();
+         map2.put("length",length);  //返回本次长度
+         map2.put("arr", arr);//返回本次选择的节点号
+         return map2;	 
+     }
+     //交换生成一个新解
+     public ArrayList<String> findSwap(final int i,final int j,String [] Tpos) {
+         //交换 
+         String temp=Tpos[i];
+  		 Tpos[i]=Tpos[j];
+  		 Tpos[j]=temp;
+         List<String> listA = Arrays.asList(Tpos);
+         ArrayList<String> listB = new ArrayList<String>(listA);
+  
+         return listB;
+      }
      public static void main(String[] args) throws FileNotFoundException, IOException {
-            Solution s=new Solution();
-          //  Methods method=new Methods();
-            problem.read(fileName);
-            HashMap  map= problem.getNodemap();
-            int num=  problem.getNumOfCluster();
-            int num1= problem.getNodeNum();
-            s.createEdge(num1);
-            ArrayList arr=  s.Choose(num,matrix); 
-            System.out.println(arr);
-            HashMap map1= s.getMap(arr, map);
-            System.out.println(map1);
-            s.getSolution(map1,num);
-   } 
-   
+       /*  Solution s=new Solution();
+       // Methods method=new Methods();
+         HashMap  map= problem.getNodemap();
+         int num=  problem.getNumOfCluster();
+         int num1= problem.getNodeNum();
+        s.createEdge(num1);
+         ArrayList arr=  s.Choose(num,matrix); 
+         System.out.println(arr);
+         HashMap map1= s.getMap(arr, map);
+         System.out.println(map1);
+         double length= s.getSolution(map1,num);
+         System.out.println(length);*/
+    	 Solution s=new Solution();
+    	 
+       //  HashMap map1= s.getMap(arr, map);
+         problem.read(fileName);
+
+        //HashMap map= s.getSolution();
+       //  map.get("arr").toString();
+   	   //  String [] Tpos  = map.get("arr").toString().substring(1,map.get("arr").toString().length()-1).split(",");
+    //     List<String> listA = Arrays.asList(Tpos);
+      //    System.out.println(listA);
+} 
 }
