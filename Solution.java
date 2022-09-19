@@ -108,7 +108,7 @@ public class Solution implements  Comparable<Solution> {
        // System.out.println(matrix);
     }
      private static int getPosition(int ch) {
-    	// System.out.println(ch);
+    	 // System.out.println(ch);
          for(int i=0; i<tops.length; i++){
              if(tops[i]==ch){
                  return i;
@@ -134,23 +134,27 @@ public class Solution implements  Comparable<Solution> {
             //	  System.out.println(Integer.valueOf(map.get(b[j]+"").toString())+"kongwlcc");
             	 //System.out.println(matrix);
             	 //System.out.println(matrix[Integer.valueOf(map.get(b[i]+"").toString())][Integer.valueOf(map.get(b[j]+"").toString())]);
-                     edges[index++] = new EData(a[i], a[j], matrix[Integer.valueOf(map.get(b[i]+"").toString())][Integer.valueOf(map.get(b[j]+"").toString())]);
+                     edges[index++] = new EData(b[i], b[j], matrix[Integer.valueOf(map.get(b[i]+"").toString())][Integer.valueOf(map.get(b[j]+"").toString())]);
                 //  }
              }
          }
-  
+         System.out.println(edges);
          return edges;
      }
      private static ArrayList<EData> sortEdges(EData[] edges, int elen) {
     	// List<Object> list=new ArrayList<>();
+    	 //System.out.println(elen);
+    	 System.out.println(elen);
     	 double  [] weight = new  double [elen];
     	 //	 System.out.println("下一行");
+    	 list.clear();
      	 for(int i=0;i<elen;i++){
      		 //System.out.println(i);
      		weight[i]=edges[i].weight;
      		list.add(edges[i]);
      	 // System.out.print(weight[i]+" ");
     	 }
+     	 //System.out.println(list);
      	 //排序
          Collections.sort(list);
      	 return list; 
@@ -221,13 +225,14 @@ public class Solution implements  Comparable<Solution> {
         	map1.put(arr.get(i).toString().trim(),value);
         	//System.out.println(matrix);
          }
-         //System.out.println(map1);
+         //System.out.println(map1); 
      	 return map1;
     	 
      }
      
     
      private static double FindminTree(int nodeNum,HashMap map,int a[],int b[]) throws FileNotFoundException, IOException {
+    	 System.out.println(nodeNum);
          int index = 0;   
          int[] tends = new int[nodeNum*nodeNum];     // 用于保存"已有最小生成树"中每个顶点在该最小树中的终点。
          EData[] rets = new EData[nodeNum*nodeNum];   
@@ -240,35 +245,48 @@ public class Solution implements  Comparable<Solution> {
           //System.out.println(list.get(1).end+","+list.get(1).weight);
           for(int i=0;i<nodeNum*nodeNum;i++){
         	edges1[i]=list.get(i);
+        	//System.out.println(edges1[i]);
           }
-        
-         for (int i=0; i<nodeNum*nodeNum ; i++) {
+        int starts[]=new int[nodeNum];
+        int ends[]=new int[nodeNum];
+        //System.out.println(edges1);
+
+        int q=0;
+          for (int i=0; i<nodeNum*nodeNum ; i=i+2) {
         //	 System.out.println(edges[i].start+","+edges[i].end);
-             int p1 = getPosition(edges1[i].start);      // 获取第i条边的"起点"的序号
-             int p2 = getPosition(edges1[i].end);        // 获取第i条边的"终点"的序号
+        	int  p1=edges1[i].start;
+        	int  p2=edges1[i].end;
+           //  int p1 = getPosition(edges1[i].start);      // 获取第i条边的"起点"的序号
+             //int p2 = getPosition(edges1[i].end);        // 获取第i条边的"终点"的序号
              int m = getEnd(tends, p1);                 // 获取p1在"已有的最小生成树"中的终点
              int n = getEnd(tends, p2);                 // 获取p2在"已有的最小生成树"中的终点
              // 如果m!=n，意味着"边i"与"已经添加到最小生成树中的顶点"没有形成环路
              if (m != n) {//没有形成环路
-                 // 设置m就是在"已有的最小生成树"中终点集合的索引，它的值就是终点n，
+                 // 设置m就是在" 已有的最小生成树"中终点集合的索引，它的值就是终点n，
                  //例如 C D线段 ,m的值就是C在tends集合中的索引位置，n就是D在tends集合中m索引位置的值
                  tends[m] = n;
                  rets[index++] = edges1[i];   
-                 //System.out.println(edges1[i].start+","+edges1[i].end);
+                 System.out.println(edges1[i].start+","+edges1[i].end);
+                 starts[q]=edges1[i].start;
+                 ends[q]=edges1[i].end;
+                q++;
              }
          }
+          System.out.println(starts);
+           System.out.println(ends);
          double length = 0;
          for (int i = 0; i < index; i++){
              length += rets[i].weight;
          }
+         //System.out.println(length);
          //System.out.printf("\n"); 
          //System.out.println("结束");
          //System.out.printf("\n"); 
          return length;
      }
      //生成最小广义生成树的一个解     map是对应关系的map key是素组对应 value是节点号  map1
-     public static double  getSolution(HashMap<Integer, String> map,int num,ArrayList arr) throws FileNotFoundException, IOException{    
-    	 int [] a = null;
+     public static double  getSolution(HashMap<Integer, String> map,int num,ArrayList arr,boolean flag) throws FileNotFoundException, IOException{    
+     	 int [] a = null;
     	 int [] b = null;
     	 int  count=0;
          double minDistance=Integer.MAX_VALUE;
@@ -287,31 +305,35 @@ public class Solution implements  Comparable<Solution> {
               count++;	 
 		    }
 			double length = 0;
-		   for(int k=0;k<num-1;k++){
-			//   System.out.println(matrix[28][182]);
-			 //  System.out.println(a[k]+","+a[k+1]);
-			//   System.out.println(k+"k");
-             length+=matrix[a[k]][a[k+1]];		
-		   } 
-		   if(arr==null){
-			      length =   FindminTree(count, map, a,b);   
-		   }
+			if(flag==false){
+				 length =   FindminTree(count, map, a,b);   
+			}else{
+				 for(int k=0;k<num-1;k++){
+						//   System.out.println(matrix[28][182]);
+						 //  System.out.println(a[k]+","+a[k+1]);
+						//   System.out.println(k+"k");
+			             length+=matrix[a[k]][a[k+1]];		
+				  } 
+			}
+ 
 		return length;
      }
      public static HashMap getSolution(ArrayList arr) throws FileNotFoundException, IOException{
     	 //System.out.println(arr);
+    	 boolean flag=true;
          problem.read(fileName);
          int num=  problem.getNumOfCluster();
          HashMap  map= problem.getNodemap();
          int num1= problem.getNodeNum();
          createEdge(num1);
         if(arr==null){
-              arr=  Choose(num,matrix); 
+               arr=  Choose(num,matrix);
+         	    flag=false;
         }
          //System.out.println(arr);
          HashMap map1= getMap(arr, map);
          //System.out.println(map1);
-         double length= getSolution(map1,num,arr);
+         double length= getSolution(map1,num,arr,flag);
          HashMap map2=new HashMap();
          map2.put("length",length);  //返回本次长度
          map2.put("arr", arr);//返回本次选择的节点号
@@ -325,31 +347,69 @@ public class Solution implements  Comparable<Solution> {
   		 Tpos[j]=temp;
          List<String> listA = Arrays.asList(Tpos);
          ArrayList<String> listB = new ArrayList<String>(listA);
-  
          return listB;
       }
-     public static void main(String[] args) throws FileNotFoundException, IOException {
-       /*  Solution s=new Solution();
-       // Methods method=new Methods();
-         HashMap  map= problem.getNodemap();
-         int num=  problem.getNumOfCluster();
-         int num1= problem.getNodeNum();
-        s.createEdge(num1);
-         ArrayList arr=  s.Choose(num,matrix); 
-         System.out.println(arr);
-         HashMap map1= s.getMap(arr, map);
-         System.out.println(map1);
-         double length= s.getSolution(map1,num);
-         System.out.println(length);*/
-    	 Solution s=new Solution();
-    	 
-       //  HashMap map1= s.getMap(arr, map);
-         problem.read(fileName);
+     public ArrayList<String> findReverse(String[] Tpos){
+    	    for(int i = 0;i < Tpos.length /2;i++){
+        	    String temp = Tpos[i];
+        	    Tpos[i] =Tpos[Tpos.length - i - 1];
+        	    Tpos[Tpos.length - i -1] = temp;
+        	} 
+            List<String> listA = Arrays.asList(Tpos);
+            ArrayList<String> listB = new ArrayList<String>(listA);
+    	 return listB;
+     }
+     //插入f'd'g'v'r
+     public ArrayList<String> findInsert(String[] Tpos,int m){
+    	 String[] TposCopy = new String[Tpos.length];// 定义一个新的数组，与原来的数组长度相同
+     	 int length= Tpos.length;
+          for (int i = 0; i < Tpos.length; i++) {
+        	  TposCopy[i] = Tpos[i];
+         }
+         for (int i = 0; i < Tpos.length; i++) {
+             int tmp = (i + m) % length;// 计算新的位置
+             Tpos[tmp] = TposCopy[i];
+         }
+       //  System.out.print("移动 " + m + " 个位置后，数组变为：");
+ /*        for (int i = 0; i < length; i++) {
+             System.out.print(Tpos[i] + " ");
+         }*/
+ 
+         List<String> listA = Arrays.asList(Tpos);
+         ArrayList<String> listB = new ArrayList<String>(listA);
+ 	    return listB;
+  }
 
-        //HashMap map= s.getSolution();
-       //  map.get("arr").toString();
-   	   //  String [] Tpos  = map.get("arr").toString().substring(1,map.get("arr").toString().length()-1).split(",");
-    //     List<String> listA = Arrays.asList(Tpos);
-      //    System.out.println(listA);
-} 
+     public static void main(String[] args) throws FileNotFoundException, IOException {
+      /**   problem.read(fileName);
+         int num=  problem.getNumOfCluster();
+         HashMap  map= problem.getNodemap();
+         int num1= problem.getNodeNum();
+         createEdge(num1);
+         ArrayList   arr=  Choose(num,matrix); 
+         //System.out.println(arr);
+         HashMap map1= getMap(arr, map);
+         //System.out.println(map1);
+         double length= getSolution(map1,num,arr,false);
+         HashMap map2=new HashMap();
+         map2.put("length",length);  //返回本次长度
+         map2.put("arr", arr);//返回本次选择的节点号  **/
+    	 int[] newArray = new int[5];// 定义一个新的数组，与原来的数组长度相同
+    	 int array[]={1,2,3,4,5};
+    	 int length= 5;
+    	 int  m=2;
+         for (int i = 0; i < 5; i++) {
+             newArray[i] = array[i];
+         }
+         for (int i = 0; i < 5; i++) {
+             int tmp = (i + m) % length;// 计算新的位置
+             array[tmp] = newArray[i];
+         }
+         System.out.print("移动 " + m + " 个位置后，数组变为：");
+         for (int i = 0; i < length; i++) {
+             System.out.print(array[i] + " ");
+         }
+     }
+  
+     
 }
