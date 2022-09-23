@@ -167,7 +167,7 @@ public class Solution implements  Comparable<Solution> {
          return i;
      }
      //其中每个簇包含的节点
-    private static  String Get_Cluster(int i) throws FileNotFoundException, IOException{
+    public static  String Get_Cluster(int i) throws FileNotFoundException, IOException{
      //	System.out.println(i);
 	    String arr=Getarr(problem.getClusters(), i);
 	  //  System.out.println(arr);
@@ -286,7 +286,12 @@ public class Solution implements  Comparable<Solution> {
      }
      //生成最小广义生成树的一个解     map是对应关系的map key是素组对应 value是节点号  map1
      public static double  getSolution(HashMap<Integer, String> map,int num,ArrayList arr,boolean flag) throws FileNotFoundException, IOException{    
-     	 int [] a = null;
+/*     	System.out.println(map);
+     	System.out.println(num);
+     	System.out.println(arr.toString());
+     	System.out.println(flag);*/
+
+    	 int [] a = null;
     	 int [] b = null;
     	 int  count=0;
          double minDistance=Integer.MAX_VALUE;
@@ -328,11 +333,12 @@ public class Solution implements  Comparable<Solution> {
          createEdge(num1);
         if(arr==null){
                arr=  Choose(num,matrix);
-         	    flag=false;
+         	  flag=false;
         }
-         //System.out.println(arr);
+       //  System.out.println(arr);
          HashMap map1= getMap(arr, map);
-         //System.out.println(map1);
+         
+  //       System.out.println(map1);
          double length= getSolution(map1,num,arr,flag);
          HashMap map2=new HashMap();
          map2.put("length",length);  //返回本次长度
@@ -349,6 +355,11 @@ public class Solution implements  Comparable<Solution> {
          ArrayList<String> listB = new ArrayList<String>(listA);
          return listB;
       }
+     public ArrayList  arrToarraylist(String [] Tpos){
+    	    List<String> listA = Arrays.asList(Tpos);
+            ArrayList<String> listB = new ArrayList<String>(listA);
+            return listB; 
+     }
      public ArrayList<String> findReverse(String[] Tpos){
     	    for(int i = 0;i < Tpos.length /2;i++){
         	    String temp = Tpos[i];
@@ -379,9 +390,21 @@ public class Solution implements  Comparable<Solution> {
          ArrayList<String> listB = new ArrayList<String>(listA);
  	    return listB;
   }
+     //返回一个簇中的节点号
+     public static String  chooseNode(int ClusterNum) throws FileNotFoundException, IOException{
+    	String arr= Get_Cluster(ClusterNum);
+    	String[] cluster=arr.split(","); 
+        Random random=new Random();
+        int r=random.nextInt(cluster.length);
+    	 return cluster[r];
+     }
 
      public static void main(String[] args) throws FileNotFoundException, IOException {
-      /**   problem.read(fileName);
+    	 problem.read(fileName);
+    	// Solution s=new Solution();
+    	// System.out.println(s.Get_Cluster(3));
+     
+    	 /**   problem.read(fileName);
          int num=  problem.getNumOfCluster();
          HashMap  map= problem.getNodemap();
          int num1= problem.getNodeNum();
@@ -394,7 +417,7 @@ public class Solution implements  Comparable<Solution> {
          HashMap map2=new HashMap();
          map2.put("length",length);  //返回本次长度
          map2.put("arr", arr);//返回本次选择的节点号  **/
-    	 int[] newArray = new int[5];// 定义一个新的数组，与原来的数组长度相同
+/*    	 int[] newArray = new int[5];// 定义一个新的数组，与原来的数组长度相同
     	 int array[]={1,2,3,4,5};
     	 int length= 5;
     	 int  m=2;
@@ -408,7 +431,7 @@ public class Solution implements  Comparable<Solution> {
          System.out.print("移动 " + m + " 个位置后，数组变为：");
          for (int i = 0; i < length; i++) {
              System.out.print(array[i] + " ");
-         }
+         }*/
      }
   
      
