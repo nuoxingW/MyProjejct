@@ -29,7 +29,7 @@ public class Problems {
 	private int clusterPos[];
 	private double[] prize;
 	private FileReader data;
-    private  List clusters;
+    private static  List clusters;
     private   HashMap Nodemap =  new HashMap();
 
     private  int[] vex =new int[nodeNum];
@@ -40,7 +40,6 @@ public class Problems {
 	}
  //¶ÁÈ¡ÎÄ¼þ
 	 private void readFileGTP(Scanner scan) {
-
 	    	points = new ArrayList<>();
 	    	nodeNum = scan.nextInt();
 	     	pos = new double[nodeNum][2];
@@ -66,7 +65,7 @@ public class Problems {
 	     			c.add(node-1);
  	     	        vex[num]=node-1;           
  	     	     //   Nodemap.put("1", node);
- 	     	       Nodemap.put(new Integer(node-1).toString(),String.valueOf(num));
+ 	     	        Nodemap.put(new Integer(node-1).toString(),String.valueOf(num));
 	     			clusterNum[node - 1] = clusters.size();
 	     			clusterPos[node - 1] = c.size() - 1;
 	     		    num++;
@@ -93,7 +92,11 @@ public class Problems {
 	public HashMap getNodemap() {
 		return Nodemap;
 	}
+	public int[] getVex() {
+		return vex;
+	}
 	public int getVex(int i) {
+		//System.out.println(vex);
 		return vex[i];
 	}
 		//to calculate the distance between node

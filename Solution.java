@@ -76,16 +76,13 @@ public class Solution implements  Comparable<Solution> {
     	//System.out.println(index);
      	tops= new int[index]; 
         for(int i=0;i<index;i++){
-        	//System.out.println(pro.getVex(1)+"problem.getVex(0)");
-        	//System.out.println();
-             tops[i]= pro.getVex(i);  
+               tops[i]= pro.getVex(i);  
         }
         matrix = new double[index][index];
         for(int i=0;i<index;i++){
             for(int j=0;j<index;j++){
             	matrix[i][j]=Get_arc(i, j);
-            	//System.out.println(matrix[i][j]+"Weight");
-              }
+               }
          }
        // System.out.println(matrix);
     }
@@ -229,8 +226,6 @@ public class Solution implements  Comparable<Solution> {
      	 return map1;
     	 
      }
-     
-    
      private static double FindminTree(int nodeNum,HashMap map,int a[],int b[]) throws FileNotFoundException, IOException {
     	 System.out.println(nodeNum);
          int index = 0;   
@@ -250,7 +245,6 @@ public class Solution implements  Comparable<Solution> {
         int starts[]=new int[nodeNum];
         int ends[]=new int[nodeNum];
         //System.out.println(edges1);
-
         int q=0;
           for (int i=0; i<nodeNum*nodeNum ; i=i+2) {
         //	 System.out.println(edges[i].start+","+edges[i].end);
@@ -286,11 +280,6 @@ public class Solution implements  Comparable<Solution> {
      }
      //生成最小广义生成树的一个解     map是对应关系的map key是素组对应 value是节点号  map1
      public static double  getSolution(HashMap<Integer, String> map,int num,ArrayList arr,boolean flag) throws FileNotFoundException, IOException{    
-/*     	System.out.println(map);
-     	System.out.println(num);
-     	System.out.println(arr.toString());
-     	System.out.println(flag);*/
-
     	 int [] a = null;
     	 int [] b = null;
     	 int  count=0;
@@ -300,8 +289,6 @@ public class Solution implements  Comparable<Solution> {
     	 b= new int[num]; 
     	 Set keys = new HashSet();
 		   for (Entry entry : map.entrySet()) {
-			//   System.out.println(matrix);
-			 // System.out.println(entry.getValue().toString());
 			 String temp=entry.getValue().toString().trim();
 		     a[count]=	 Integer.valueOf(temp.trim().toString()); //位置
 		     //System.out.println(a[count]);
@@ -314,9 +301,6 @@ public class Solution implements  Comparable<Solution> {
 				 length =   FindminTree(count, map, a,b);   
 			}else{
 				 for(int k=0;k<num-1;k++){
-						//   System.out.println(matrix[28][182]);
-						 //  System.out.println(a[k]+","+a[k+1]);
-						//   System.out.println(k+"k");
 			             length+=matrix[a[k]][a[k+1]];		
 				  } 
 			}
@@ -335,10 +319,7 @@ public class Solution implements  Comparable<Solution> {
                arr=  Choose(num,matrix);
          	  flag=false;
         }
-       //  System.out.println(arr);
          HashMap map1= getMap(arr, map);
-         
-  //       System.out.println(map1);
          double length= getSolution(map1,num,arr,flag);
          HashMap map2=new HashMap();
          map2.put("length",length);  //返回本次长度
@@ -381,11 +362,6 @@ public class Solution implements  Comparable<Solution> {
              int tmp = (i + m) % length;// 计算新的位置
              Tpos[tmp] = TposCopy[i];
          }
-       //  System.out.print("移动 " + m + " 个位置后，数组变为：");
- /*        for (int i = 0; i < length; i++) {
-             System.out.print(Tpos[i] + " ");
-         }*/
- 
          List<String> listA = Arrays.asList(Tpos);
          ArrayList<String> listB = new ArrayList<String>(listA);
  	    return listB;
@@ -401,6 +377,8 @@ public class Solution implements  Comparable<Solution> {
 
      public static void main(String[] args) throws FileNotFoundException, IOException {
     	 problem.read(fileName);
+    	 System.out.println(Get_Cluster(17));
+    	 
     	// Solution s=new Solution();
     	// System.out.println(s.Get_Cluster(3));
      

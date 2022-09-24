@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,10 +38,10 @@ public class Methods {
     static HashMap<String,String> InitialSoutionmap;//定义用来存放原始解的map
     static HashMap<String,String> InitialSoutionmap1;//定义用来存放原始解的map1
     static HashMap<String,String> InitialSoutionmap2;//定义用来存放原始解的map2\
-    static List<Map> eliteListcooy = new ArrayList();
-    static List<Map>  eliteList = new ArrayList() ;  //存放精英解
+    static List eliteListcooy = new ArrayList();
+    static List  eliteList = new ArrayList() ;  //存放精英解
     static int times;//循环次数
-    private static double findOptimaltree() throws FileNotFoundException, IOException{
+    public static void findOptimaltree() throws FileNotFoundException, IOException{
         int num=problem.getClustersLength(); //获得簇的数量
         Tpos = new String[num]; //存放选择顶点数组
         Tpos=null;//初始化
@@ -50,6 +52,7 @@ public class Methods {
   /*       List<String> listA = Arrays.asList(Tpos);
          ArrayList<String> listB = new ArrayList<String>(listA);*/
          eliteList.add(InitialSoutionmap); //存放一个解和长度
+         long startMili=System.currentTimeMillis();
         while(1==1){
             Double s= random.nextDouble(); // 随机生成一个接受扰动的概率
             if(s<α){
@@ -78,10 +81,9 @@ public class Methods {
         	   InitialSoutionmap= proportionanlSelcetionLS3(num); 
            }
            eliteList.add(InitialSoutionmap);
-           System.out.println("!1111111111111111");
+           //System.out.println("!1111111111111111");
            improvedBestsolution(num);
-           System.out.println(history+"|||!!2222222");
-
+           //System.out.println(history+"|||!!2222222");
            if(history==100){
         	 int t= random.nextInt(eliteList.size());
         	 HashMap map3=(HashMap)eliteList.get(t);
@@ -89,15 +91,12 @@ public class Methods {
         	 history=0;
            }
            if(iter%10000==0){
-               System.out.println("!3333333");
-        	   eliteListcooy=eliteList;
-        	   System.out.println(eliteListcooy.size()+"eliteList.size()");
-        	   int cishu=eliteListcooy.size();
+         	   eliteListcooy=eliteList;
+         	   int cishu=eliteListcooy.size();
         	   for(int i=0;i<cishu;i++){
         		   InitialSoutionmap=(HashMap<String, String>) eliteListcooy.get(i);
-        		   System.out.println(i+"iiiiiiiiiii");
-                   System.out.println("!44444444444");
-
+        		 //  System.out.println(i+"iiiiiiiiiii");
+                  // System.out.println("!44444444444");
         		   InitialSoutionmap=proportionanlSelcetionLS3(num);
         		   eliteList.add(InitialSoutionmap);
         		      Object length= InitialSoutionmap1.get("length");
@@ -117,13 +116,34 @@ public class Methods {
         	   }
         		   InitialSoutionmap=InitialSoutionmap1=solution.getSolution(null);
         		   eliteList.add(InitialSoutionmap);
-        		 
-        		   System.out.println(eliteList);
-           }
+                 }
            iter=iter+1;
+           long endMili=System.currentTimeMillis();//结束时间
+           System.out.println(endMili-startMili);
+           if((endMili-startMili)>(59000)){
+        	//   System.out.println(eliteList);
+        	   break;
+           }
         }
+         sortEliteList(eliteList);
+         System.out.println(InitialSoutionmap1);
+         System.out.println(InitialSoutionmap2);
+
     }
-    //判断是否有这个元素 用于判断随机后是否该顶点已经存在
+    private static void sortEliteList(List eliteList) {
+    	//List subVlaueList=new ArrayList<>();
+ 
+        Collections.sort(eliteList, new Comparator<Map<String, Object>>() {
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                Integer length1 = Integer.valueOf(o1.get("length").toString().hashCode()) ;//length1是从你list里面拿出来的一个
+                Integer length2 = Integer.valueOf(o2.get("length").toString().hashCode()) ; //length2是从你list里面拿出来的第二个name
+                return length1.compareTo(length2);
+            }
+        });
+       System.out.println(eliteList);
+	}
+ 
+	//判断是否有这个元素 用于判断随机后是否该顶点已经存在
     public static boolean findIsExist(String[] arr, String targetValue) {
         return Arrays.asList(arr).contains(targetValue);
     }
@@ -212,7 +232,6 @@ public class Methods {
 			      // Tpos=arr.toString().split(",");
 			       ArrayList list1= solution.arrToarraylist(arr);
 			        map= solution.getSolution(list1);
-			        
 			        if(Double.valueOf(map.get("length").toString())<length){
 			        	return map;
  			           // eliteList.add(1, map); 
@@ -234,7 +253,7 @@ public class Methods {
 			       ArrayList list1= solution.arrToarraylist(Tpos);
 			        map= solution.getSolution(list1);
 			        if(Integer.valueOf(map.get("length").toString())<length){
- 			            eliteList.add(1, map); 
+ 			            eliteList.add(map); 
 			        }
 			   }   			  
 		  }
@@ -276,10 +295,11 @@ public class Methods {
 	   
    }
    public static void main(String[] args) throws FileNotFoundException, IOException {
-	 problem.read(fileName);
+	 
+	  problem.read(fileName);
 	  // String newarr=solution.Get_Cluster(23);	   
  //   System.out.println(newarr);
-	  findOptimaltree();
+	   findOptimaltree();
   	 //System.out.println(solution.Get_Cluster(2));
   	 
 
