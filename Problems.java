@@ -18,28 +18,29 @@ import java.util.Scanner;
 import javax.sound.sampled.Line;
 
 public class Problems {
-	private ArrayList  points;
-	private int  nodeNum;
-	private double pos[][];
-	private int[] clusterNum = new int[nodeNum];
-	private  int lusterPos[] = new int[nodeNum];
-	private int largestCluster ;
-	private int  numOfCluster ;
-	private double[][] dists;
-	private int clusterPos[];
-	private double[] prize;
-	private FileReader data;
-    private static  List clusters;
-    private   HashMap Nodemap =  new HashMap();
-
-    private  int[] vex =new int[nodeNum];
-	public void read(String fileName) throws FileNotFoundException,IOException {	
+	private static ArrayList  points;
+	private static   String fileName;
+	private static int  nodeNum;
+	private static double pos[][];
+	private static int[] clusterNum = new int[nodeNum];
+	private  static int lusterPos[] = new int[nodeNum];
+	private static int largestCluster ;
+	private static int  numOfCluster ;
+	private static double[][] dists;
+	private static int clusterPos[];
+	private static double[] prize;
+	private static FileReader data;
+    private static    List clusters;
+    private static  HashMap Nodemap =  new HashMap();
+    private static  int[] vex =new int[nodeNum];
+	public   void read(String fileName) throws FileNotFoundException,IOException {	
+		this.fileName=fileName;
  		data = new FileReader(fileName);
   		Scanner scan = new Scanner(data);
   		readFileGTP(scan);
 	}
  //读取文件
-	 private void readFileGTP(Scanner scan) {
+	 private static void readFileGTP(Scanner scan) {
 	    	points = new ArrayList<>();
 	    	nodeNum = scan.nextInt();
 	     	pos = new double[nodeNum][2];
@@ -61,11 +62,9 @@ public class Problems {
 	     		int m = scan.nextInt();
        		for (int j = 0; j < m; j++) {
 	     			int node = scan.nextInt();
- 	     		//	c.add(node - 1);
-	     			c.add(node-1);
+ 	     			c.add(node-1);
  	     	        vex[num]=node-1;           
- 	     	     //   Nodemap.put("1", node);
- 	     	        Nodemap.put(new Integer(node-1).toString(),String.valueOf(num));
+  	     	        Nodemap.put(new Integer(node-1).toString(),String.valueOf(num));
 	     			clusterNum[node - 1] = clusters.size();
 	     			clusterPos[node - 1] = c.size() - 1;
 	     		    num++;
@@ -84,8 +83,7 @@ public class Problems {
 	     	prize = new double[nodeNum];
 	     	for (int i = 0; i < nodeNum; i++) {
 	     		prize[i] = scan.nextInt();
-	     		//System.out.println(prize[i]);
-	     	}
+ 	     	}
 	     	a = scan.nextInt();
 	     	assert(a == -999);
 	    }
@@ -96,39 +94,92 @@ public class Problems {
 		return vex;
 	}
 	public int getVex(int i) {
-		//System.out.println(vex);
-		return vex[i];
+ 		return vex[i];
 	}
 		//to calculate the distance between node
-	  	public void calcuDistance() {
+	  	private static  void calcuDistance() {
 	  		dists = new double[nodeNum][nodeNum];
 	  		for (int i=0; i<nodeNum;i++) {
-	  			//System.out.println(i+"i的数量");
-	  			for (int j=0; j<nodeNum;j++) {
-	  				//System.out.println(j+"j的数量");
-	  				if (i==j) {
+ 	  			for (int j=0; j<nodeNum;j++) {
+ 	  				if (i==j) {
 	 					dists[i][j]=Integer.MAX_VALUE;
-	 				//	System.out.println(dists[i][j]);
-	   				} else {
-	  					double distance;
-	  					distance = (pos[i][0]-pos[j][0]);
-	  					distance *= distance;
-	  					distance += (pos[i][1]-pos[j][1])*(pos[i][1]-pos[j][1]);
-	  					if (Solution.withPrice) {
-	  						distance = Math.ceil(Math.sqrt(distance/10.0));
-	  					} else {
-	  						distance = Math.sqrt(distance);
-	  					}
-						dists[i][j] = (int)(distance + 0.5);
-	  				}
+  	   				} else {
+  	  					double distance;
+  	  					distance = (pos[i][0]-pos[j][0]);
+  	  					distance *= distance;
+  	  					distance += (pos[i][1]-pos[j][1])*(pos[i][1]-pos[j][1]);
+  	  					if (fileName.toLowerCase().contains("att") && !Solution.withPrice) {
+  	  						distance = Math.ceil(Math.sqrt(distance/10.0));
+  	  					} else {
+  	  						distance = Math.sqrt(distance);
+  	  					}
+  						dists[i][j] = (int)(distance + 0.5);
+  	  				}
 	  			}
 	  		}
-	  	    //    System.out.println(dists);
-	  	}
+	  	  System.out.println(dists);
+	  	  
+ 	  	}
+	  	
+/*	  	private static int getKMin(int[] a, int k) {
+			if(a == null || a.length<k){
+				return Integer.MIN_VALUE;
+			}
+			return quikSort(a,0,a.length-1,k);
+		}*/
+/*	private static int quikSort(int[] a, int low, int high, int k) {
+//			第0个元素作为枢纽
+			int i = low;
+			int j=high;
+			int tmp = a[i];
+			if(low > high){
+				return Integer.MIN_VALUE;
+			}
+//			快速排序
+			while(i<j){
+				while(i<j && a[j]>=tmp){
+					j--;
+				}
+				if(i<j){
+					a[i++] = a[j];
+				}
+				while(i<j && a[i]<tmp){
+					i++;
+				}
+				if(i<j){
+					a[j--] = a[i];
+				}
+			}//
+			a[i] = tmp;
+//			判断i+1与k的大小
+			if(i+1 == k){
+				return tmp;
+			}else if(i+1 > k){
+				return quikSort(a, low, i-1, k);
+			}else{
+				return quikSort(a, i+1, high, k);
+			}
+		}*/
+ 
 	    public static void main(String[] args) throws FileNotFoundException, IOException {      
         Problems problem =new Problems();
-        problem.read("D:\\23GR229.GTP");
+        problem.read("C:\\Users\\Nuoxing.W\\Desktop\\gMST\\datas\\instances\\11EIL51.GTP");
+		double[][] a = problem.getDists();
+ 		//System.out.print(kmin);
+		 double[] ss = getColMin(a); 
+		    for (int i = 0; i < ss.length; i++) { 
+		      System.out.print(ss[i] + " "); 
+		    } 
 	}
+	    public static double[] getColMin(double[][] a) { 
+	        double[] res = new double[a.length]; 
+	        for (int i = 0; i < a.length; i++) { 
+	          double[] s = a[i]; 
+	          Arrays.sort(s); 
+	          res[i] = s[0]; 
+	        } 
+	        return res; 
+	      } 
 	    public  ArrayList getPoints() {
 			return points;
 		}
